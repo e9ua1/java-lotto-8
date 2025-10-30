@@ -5,6 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class LottoGeneratorTest {
@@ -44,6 +46,44 @@ class LottoGeneratorTest {
             Lottos lottos = generator.generate(money);
 
             assertThat(lottos.size()).isEqualTo(5);
+        }
+
+        @Test
+        @DisplayName("생성된 로또는 6개의 번호를 가진다")
+        void generatedLottoHasSixNumbers() {
+            Money money = new Money(1000);
+            LottoGenerator generator = new LottoGenerator();
+
+            Lottos lottos = generator.generate(money);
+            List<Lotto> lottoList = lottos.getLottos();
+
+            assertThat(lottoList.get(0).getNumbers()).hasSize(6);
+        }
+
+        @Test
+        @DisplayName("생성된 로또의 번호는 1~45 범위다")
+        void generatedLottoNumbersInRange() {
+            Money money = new Money(1000);
+            LottoGenerator generator = new LottoGenerator();
+
+            Lottos lottos = generator.generate(money);
+            List<Lotto> lottoList = lottos.getLottos();
+            List<Integer> numbers = lottoList.get(0).getNumbers();
+
+            assertThat(numbers).allMatch(number -> number >= 1 && number <= 45);
+        }
+
+        @Test
+        @DisplayName("생성된 로또의 번호는 중복되지 않는다")
+        void generatedLottoNumbersAreUnique() {
+            Money money = new Money(1000);
+            LottoGenerator generator = new LottoGenerator();
+
+            Lottos lottos = generator.generate(money);
+            List<Lotto> lottoList = lottos.getLottos();
+            List<Integer> numbers = lottoList.get(0).getNumbers();
+
+            assertThat(numbers).doesNotHaveDuplicates();
         }
     }
 }
