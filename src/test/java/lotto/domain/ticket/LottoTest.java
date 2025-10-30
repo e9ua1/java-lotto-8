@@ -1,5 +1,7 @@
 package lotto.domain.ticket;
 
+import lotto.domain.winning.BonusNumber;
+import lotto.domain.winning.WinningNumbers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -86,6 +88,35 @@ class LottoTest {
             int matchCount = lotto.countMatches(winningNumbers);
 
             assertThat(matchCount).isEqualTo(6);
+        }
+    }
+
+    @Nested
+    @DisplayName("보너스 번호를 확인할 때")
+    class ContainsBonusTest {
+
+        @Test
+        @DisplayName("보너스 번호가 포함되어 있으면 true를 반환한다")
+        void containsBonusNumber() {
+            Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+            WinningNumbers winningNumbers = new WinningNumbers(List.of(7, 8, 9, 10, 11, 12));
+            BonusNumber bonusNumber = new BonusNumber(3, winningNumbers);
+
+            boolean result = lotto.containsBonus(bonusNumber);
+
+            assertThat(result).isTrue();
+        }
+
+        @Test
+        @DisplayName("보너스 번호가 포함되어 있지 않으면 false를 반환한다")
+        void doesNotContainBonusNumber() {
+            Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+            WinningNumbers winningNumbers = new WinningNumbers(List.of(7, 8, 9, 10, 11, 12));
+            BonusNumber bonusNumber = new BonusNumber(13, winningNumbers);
+
+            boolean result = lotto.containsBonus(bonusNumber);
+
+            assertThat(result).isFalse();
         }
     }
 }
