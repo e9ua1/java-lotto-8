@@ -1,5 +1,7 @@
 package lotto.domain.winning;
 
+import lotto.domain.money.Money;
+
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -12,5 +14,16 @@ public class WinningStatistics {
 
     public long getCountByRank(Rank rank) {
         return rankCounts.getOrDefault(rank, 0L);
+    }
+
+    public double calculateReturnRate(Money purchaseAmount) {
+        long totalPrize = calculateTotalPrize();
+        return (double) totalPrize / purchaseAmount.getAmount() * 100;
+    }
+
+    private long calculateTotalPrize() {
+        return rankCounts.entrySet().stream()
+                .mapToLong(entry -> entry.getKey().getPrize() * entry.getValue())
+                .sum();
     }
 }
