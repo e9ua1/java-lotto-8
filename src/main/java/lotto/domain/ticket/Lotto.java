@@ -1,5 +1,7 @@
 package lotto.domain.ticket;
 
+import lotto.domain.winning.WinningNumbers;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -44,5 +46,11 @@ public class Lotto {
 
     public List<Integer> getNumbers() {
         return new ArrayList<>(numbers);
+    }
+
+    public int countMatches(WinningNumbers winningNumbers) {
+        return (int) numbers.stream()
+                .filter(winningNumbers::contains)
+                .count();
     }
 }
