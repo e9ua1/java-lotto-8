@@ -46,4 +46,8 @@ public enum Rank {
     public boolean isWinning() {
         return this != NONE;
     }
+
+    public String getDescription() {
+        return description;
+    }
 }
