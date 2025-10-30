@@ -50,4 +50,42 @@ class LottoTest {
             assertThat(lotto.getNumbers()).containsExactly(1, 5, 10, 23, 30, 45);
         }
     }
+
+    @Nested
+    @DisplayName("당첨 번호와 비교할 때")
+    class CountMatchesTest {
+
+        @Test
+        @DisplayName("일치하는 번호 개수를 반환한다")
+        void countMatchingNumbers() {
+            Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+            WinningNumbers winningNumbers = new WinningNumbers(List.of(1, 2, 3, 7, 8, 9));
+
+            int matchCount = lotto.countMatches(winningNumbers);
+
+            assertThat(matchCount).isEqualTo(3);
+        }
+
+        @Test
+        @DisplayName("일치하는 번호가 없으면 0을 반환한다")
+        void countMatchingNumbersWithNoMatch() {
+            Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+            WinningNumbers winningNumbers = new WinningNumbers(List.of(7, 8, 9, 10, 11, 12));
+
+            int matchCount = lotto.countMatches(winningNumbers);
+
+            assertThat(matchCount).isEqualTo(0);
+        }
+
+        @Test
+        @DisplayName("모든 번호가 일치하면 6을 반환한다")
+        void countMatchingNumbersWithAllMatch() {
+            Lotto lotto = new Lotto(List.of(1, 2, 3, 4, 5, 6));
+            WinningNumbers winningNumbers = new WinningNumbers(List.of(1, 2, 3, 4, 5, 6));
+
+            int matchCount = lotto.countMatches(winningNumbers);
+
+            assertThat(matchCount).isEqualTo(6);
+        }
+    }
 }
