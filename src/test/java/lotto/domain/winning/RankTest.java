@@ -68,4 +68,68 @@ class RankTest {
             assertThat(rank).isEqualTo(Rank.NONE);
         }
     }
+
+    @Nested
+    @DisplayName("상금을 조회할 때")
+    class GetPrizeTest {
+
+        @Test
+        @DisplayName("1등 상금은 2,000,000,000원이다")
+        void firstPrize() {
+            assertThat(Rank.FIRST.getPrize()).isEqualTo(2_000_000_000);
+        }
+
+        @Test
+        @DisplayName("2등 상금은 30,000,000원이다")
+        void secondPrize() {
+            assertThat(Rank.SECOND.getPrize()).isEqualTo(30_000_000);
+        }
+
+        @Test
+        @DisplayName("3등 상금은 1,500,000원이다")
+        void thirdPrize() {
+            assertThat(Rank.THIRD.getPrize()).isEqualTo(1_500_000);
+        }
+
+        @Test
+        @DisplayName("4등 상금은 50,000원이다")
+        void fourthPrize() {
+            assertThat(Rank.FOURTH.getPrize()).isEqualTo(50_000);
+        }
+
+        @Test
+        @DisplayName("5등 상금은 5,000원이다")
+        void fifthPrize() {
+            assertThat(Rank.FIFTH.getPrize()).isEqualTo(5_000);
+        }
+
+        @Test
+        @DisplayName("낙첨 상금은 0원이다")
+        void nonePrize() {
+            assertThat(Rank.NONE.getPrize()).isEqualTo(0);
+        }
+    }
+
+    @Nested
+    @DisplayName("당첨 여부를 확인할 때")
+    class IsWinningTest {
+
+        @Test
+        @DisplayName("1등은 당첨이다")
+        void firstIsWinning() {
+            assertThat(Rank.FIRST.isWinning()).isTrue();
+        }
+
+        @Test
+        @DisplayName("5등은 당첨이다")
+        void fifthIsWinning() {
+            assertThat(Rank.FIFTH.isWinning()).isTrue();
+        }
+
+        @Test
+        @DisplayName("낙첨은 당첨이 아니다")
+        void noneIsNotWinning() {
+            assertThat(Rank.NONE.isWinning()).isFalse();
+        }
+    }
 }
