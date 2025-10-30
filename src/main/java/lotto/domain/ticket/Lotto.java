@@ -1,5 +1,6 @@
 package lotto.domain.ticket;
 
+import lotto.domain.winning.BonusNumber;
 import lotto.domain.winning.WinningNumbers;
 
 import java.util.ArrayList;
@@ -52,5 +53,9 @@ public class Lotto {
         return (int) numbers.stream()
                 .filter(winningNumbers::contains)
                 .count();
+    }
+
+    public boolean containsBonus(BonusNumber bonusNumber) {
+        return numbers.contains(bonusNumber.getValue());
     }
 }
