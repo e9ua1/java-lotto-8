@@ -51,4 +51,19 @@ class MoneyTest {
             assertThat(money).isNotNull();
         }
     }
+
+    @Nested
+    @DisplayName("금액을 조회할 때")
+    class GetAmountTest {
+
+        @Test
+        @DisplayName("저장된 금액을 반환한다")
+        void getAmount() {
+            Money money = new Money(5000);
+
+            int amount = money.getAmount();
+
+            assertThat(amount).isEqualTo(5000);
+        }
+    }
 }
