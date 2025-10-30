@@ -1,12 +1,14 @@
 package lotto.domain.ticket;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class LottoTest {
@@ -32,5 +34,20 @@ class LottoTest {
         assertThatThrownBy(() -> new Lotto(numbers))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("[ERROR]");
+    }
+
+    @Nested
+    @DisplayName("로또 번호를 조회할 때")
+    class GetNumbersTest {
+
+        @Test
+        @DisplayName("생성 시점에 오름차순으로 정렬된다")
+        void numbersAreSortedOnCreation() {
+            List<Integer> unsortedNumbers = List.of(45, 1, 23, 10, 5, 30);
+
+            Lotto lotto = new Lotto(unsortedNumbers);
+
+            assertThat(lotto.getNumbers()).containsExactly(1, 5, 10, 23, 30, 45);
+        }
     }
 }
