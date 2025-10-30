@@ -189,7 +189,7 @@ lotto
 ├── controller
 │   └── LottoGameController.java
 ├── domain
-│   ├── lotto
+│   ├── ticket
 │   │   ├── Lotto.java
 │   │   ├── Lottos.java
 │   │   └── LottoGenerator.java
