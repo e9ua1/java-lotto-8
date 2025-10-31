@@ -10,6 +10,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("WinningStatistics 테스트")
 class WinningStatisticsTest {
 
     @Nested

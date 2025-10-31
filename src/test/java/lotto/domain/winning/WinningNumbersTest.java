@@ -13,6 +13,7 @@ import java.util.stream.IntStream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@DisplayName("WinningNumbers 테스트")
 class WinningNumbersTest {
 
     @Nested

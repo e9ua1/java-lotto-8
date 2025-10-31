@@ -12,6 +12,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Lottos 테스트")
 class LottosTest {
 
     @Nested
