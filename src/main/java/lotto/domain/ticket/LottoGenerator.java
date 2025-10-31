@@ -2,8 +2,9 @@ package lotto.domain.ticket;
 
 import camp.nextstep.edu.missionutils.Randoms;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import lotto.domain.money.Money;
 
@@ -16,11 +17,10 @@ public class LottoGenerator {
 
     public Lottos generate(Money money) {
         int count = calculateLottoCount(money);
-        List<Lotto> lottos = new ArrayList<>();
 
-        for (int i = 0; i < count; i++) {
-            lottos.add(generateLotto());
-        }
+        List<Lotto> lottos = IntStream.range(0, count)
+                .mapToObj(i -> generateLotto())
+                .collect(Collectors.toList());
 
         return new Lottos(lottos);
     }

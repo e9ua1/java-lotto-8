@@ -1,7 +1,5 @@
 package lotto.view;
 
-import java.util.List;
-
 import lotto.domain.ticket.Lotto;
 import lotto.domain.ticket.Lottos;
 import lotto.domain.winning.Rank;
@@ -20,10 +18,8 @@ public class OutputView {
     }
 
     public void printLottos(Lottos lottos) {
-        List<Lotto> lottoList = lottos.getLottos();
-        for (Lotto lotto : lottoList) {
-            printLotto(lotto);
-        }
+        lottos.getLottos()
+                .forEach(this::printLotto);
     }
 
     private void printLotto(Lotto lotto) {
