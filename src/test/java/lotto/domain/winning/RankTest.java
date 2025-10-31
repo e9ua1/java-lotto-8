@@ -15,7 +15,7 @@ class RankTest {
 
         @Test
         @DisplayName("6개 일치하면 1등이다")
-        void firstRank() {
+        void matchSixNumbersIsFirstRank() {
             Rank rank = Rank.of(6, false);
 
             assertThat(rank).isEqualTo(Rank.FIRST);
@@ -23,7 +23,7 @@ class RankTest {
 
         @Test
         @DisplayName("5개 일치하고 보너스 번호가 일치하면 2등이다")
-        void secondRank() {
+        void matchFiveNumbersWithBonusIsSecondRank() {
             Rank rank = Rank.of(5, true);
 
             assertThat(rank).isEqualTo(Rank.SECOND);
@@ -31,7 +31,7 @@ class RankTest {
 
         @Test
         @DisplayName("5개 일치하고 보너스 번호가 불일치하면 3등이다")
-        void thirdRank() {
+        void matchFiveNumbersWithoutBonusIsThirdRank() {
             Rank rank = Rank.of(5, false);
 
             assertThat(rank).isEqualTo(Rank.THIRD);
@@ -39,7 +39,7 @@ class RankTest {
 
         @Test
         @DisplayName("4개 일치하면 4등이다")
-        void fourthRank() {
+        void matchFourNumbersIsFourthRank() {
             Rank rank = Rank.of(4, false);
 
             assertThat(rank).isEqualTo(Rank.FOURTH);
@@ -47,7 +47,7 @@ class RankTest {
 
         @Test
         @DisplayName("3개 일치하면 5등이다")
-        void fifthRank() {
+        void matchThreeNumbersIsFifthRank() {
             Rank rank = Rank.of(3, false);
 
             assertThat(rank).isEqualTo(Rank.FIFTH);
@@ -55,7 +55,7 @@ class RankTest {
 
         @Test
         @DisplayName("3개 미만 일치하면 낙첨이다")
-        void noneRank() {
+        void matchLessThanThreeNumbersIsNone() {
             Rank rank = Rank.of(2, false);
 
             assertThat(rank).isEqualTo(Rank.NONE);
@@ -63,7 +63,7 @@ class RankTest {
 
         @Test
         @DisplayName("0개 일치하면 낙첨이다")
-        void noneRankWithZeroMatch() {
+        void matchZeroNumbersIsNone() {
             Rank rank = Rank.of(0, false);
 
             assertThat(rank).isEqualTo(Rank.NONE);
@@ -76,37 +76,37 @@ class RankTest {
 
         @Test
         @DisplayName("1등 상금은 2,000,000,000원이다")
-        void firstPrize() {
+        void getFirstRankPrize() {
             assertThat(Rank.FIRST.getPrize()).isEqualTo(2_000_000_000);
         }
 
         @Test
         @DisplayName("2등 상금은 30,000,000원이다")
-        void secondPrize() {
+        void getSecondRankPrize() {
             assertThat(Rank.SECOND.getPrize()).isEqualTo(30_000_000);
         }
 
         @Test
         @DisplayName("3등 상금은 1,500,000원이다")
-        void thirdPrize() {
+        void getThirdRankPrize() {
             assertThat(Rank.THIRD.getPrize()).isEqualTo(1_500_000);
         }
 
         @Test
         @DisplayName("4등 상금은 50,000원이다")
-        void fourthPrize() {
+        void getFourthRankPrize() {
             assertThat(Rank.FOURTH.getPrize()).isEqualTo(50_000);
         }
 
         @Test
         @DisplayName("5등 상금은 5,000원이다")
-        void fifthPrize() {
+        void getFifthRankPrize() {
             assertThat(Rank.FIFTH.getPrize()).isEqualTo(5_000);
         }
 
         @Test
         @DisplayName("낙첨 상금은 0원이다")
-        void nonePrize() {
+        void getNoneRankPrize() {
             assertThat(Rank.NONE.getPrize()).isEqualTo(0);
         }
     }
@@ -117,19 +117,19 @@ class RankTest {
 
         @Test
         @DisplayName("1등은 당첨이다")
-        void firstIsWinning() {
+        void firstRankIsWinning() {
             assertThat(Rank.FIRST.isWinning()).isTrue();
         }
 
         @Test
         @DisplayName("5등은 당첨이다")
-        void fifthIsWinning() {
+        void fifthRankIsWinning() {
             assertThat(Rank.FIFTH.isWinning()).isTrue();
         }
 
         @Test
         @DisplayName("낙첨은 당첨이 아니다")
-        void noneIsNotWinning() {
+        void noneRankIsNotWinning() {
             assertThat(Rank.NONE.isWinning()).isFalse();
         }
     }

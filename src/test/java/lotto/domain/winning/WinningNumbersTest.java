@@ -1,14 +1,10 @@
 package lotto.domain.winning;
 
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -30,33 +26,9 @@ class WinningNumbersTest {
             assertThat(winningNumbers).isNotNull();
         }
 
-        @ParameterizedTest
-        @ValueSource(ints = {0, 5, 7, 10})
-        @DisplayName("번호가 6개가 아니면 예외가 발생한다")
-        void createWinningNumbersWithInvalidSize(int size) {
-            List<Integer> numbers = IntStream.rangeClosed(1, size)
-                    .boxed()
-                    .collect(Collectors.toList());
-
-            assertThatThrownBy(() -> new WinningNumbers(numbers))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("[ERROR]");
-        }
-
-        @ParameterizedTest
-        @ValueSource(ints = {0, -1, 46, 100})
-        @DisplayName("번호가 1~45 범위를 벗어나면 예외가 발생한다")
-        void createWinningNumbersWithInvalidRange(int invalidNumber) {
-            List<Integer> numbers = List.of(1, 2, 3, 4, 5, invalidNumber);
-
-            assertThatThrownBy(() -> new WinningNumbers(numbers))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("[ERROR]");
-        }
-
         @Test
-        @DisplayName("중복된 번호가 있으면 예외가 발생한다")
-        void createWinningNumbersWithDuplicate() {
+        @DisplayName("잘못된 형식의 번호는 LottoNumbers에서 검증된다")
+        void createWinningNumbersWithInvalidNumbers() {
             List<Integer> numbers = List.of(1, 2, 3, 4, 5, 5);
 
             assertThatThrownBy(() -> new WinningNumbers(numbers))
