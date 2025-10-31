@@ -7,6 +7,7 @@ import lotto.domain.money.Money;
 import lotto.domain.ticket.LottoGenerator;
 import lotto.domain.ticket.Lottos;
 import lotto.domain.winning.BonusNumber;
+import lotto.domain.winning.TotalPrize;
 import lotto.domain.winning.WinningNumbers;
 import lotto.domain.winning.WinningStatistics;
 import lotto.view.InputParser;
@@ -73,7 +74,8 @@ public class LottoGameController {
 
     private void printResult(WinningStatistics statistics, Money purchaseAmount) {
         outputView.printStatistics(statistics);
-        double returnRate = statistics.calculateReturnRate(purchaseAmount);
+        TotalPrize totalPrize = statistics.calculateTotalPrize();
+        double returnRate = totalPrize.calculateReturnRate(purchaseAmount);
         outputView.printReturnRate(returnRate);
     }
 
