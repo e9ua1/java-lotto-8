@@ -2,18 +2,11 @@ package lotto.domain.money;
 
 public class Money {
 
-    private static final int LOTTO_PRICE = 1000;
-
     private final int amount;
 
     public Money(int amount) {
-        validate(amount);
-        this.amount = amount;
-    }
-
-    private void validate(int amount) {
         validatePositive(amount);
-        validateUnit(amount);
+        this.amount = amount;
     }
 
     private void validatePositive(int amount) {
@@ -22,17 +15,11 @@ public class Money {
         }
     }
 
-    private void validateUnit(int amount) {
-        if (amount % LOTTO_PRICE != 0) {
-            throw new IllegalArgumentException("[ERROR] 구입 금액은 1,000원 단위여야 합니다.");
-        }
-    }
-
-    public int calculateLottoCount() {
-        return amount / LOTTO_PRICE;
-    }
-
     public double calculateReturnRate(long totalPrize) {
         return (double) totalPrize / amount * 100;
+    }
+
+    protected int getAmount() {
+        return amount;
     }
 }

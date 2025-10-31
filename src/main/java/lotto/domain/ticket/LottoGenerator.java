@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import camp.nextstep.edu.missionutils.Randoms;
-import lotto.domain.money.Money;
+import lotto.domain.money.PurchaseAmount;
 
 public class LottoGenerator {
 
@@ -13,8 +13,8 @@ public class LottoGenerator {
     private static final int LOTTO_NUMBER_END = 45;
     private static final int LOTTO_NUMBER_COUNT = 6;
 
-    public Lottos generate(Money money) {
-        int count = money.calculateLottoCount();
+    public Lottos generate(PurchaseAmount purchaseAmount) {
+        int count = purchaseAmount.calculateLottoCount();
 
         List<Lotto> lottos = IntStream.range(0, count)
                 .mapToObj(i -> generateLotto())

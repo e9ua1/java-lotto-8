@@ -3,7 +3,7 @@ package lotto.controller;
 import java.util.List;
 import java.util.function.Supplier;
 
-import lotto.domain.money.Money;
+import lotto.domain.money.PurchaseAmount;
 import lotto.domain.ticket.LottoGenerator;
 import lotto.domain.ticket.Lottos;
 import lotto.domain.winning.BonusNumber;
@@ -27,7 +27,7 @@ public class LottoGameController {
     }
 
     public void run() {
-        Money purchaseAmount = readPurchaseAmount();
+        PurchaseAmount purchaseAmount = readPurchaseAmount();
         Lottos lottos = generateLottos(purchaseAmount);
         printLottos(lottos);
 
@@ -38,15 +38,15 @@ public class LottoGameController {
         printResult(statistics, purchaseAmount);
     }
 
-    private Money readPurchaseAmount() {
+    private PurchaseAmount readPurchaseAmount() {
         return retry(() -> {
             String input = inputView.readPurchaseAmount();
             int amount = InputParser.parseInt(input);
-            return new Money(amount);
+            return new PurchaseAmount(amount);
         });
     }
 
-    private Lottos generateLottos(Money purchaseAmount) {
+    private Lottos generateLottos(PurchaseAmount purchaseAmount) {
         Lottos lottos = lottoGenerator.generate(purchaseAmount);
         outputView.printPurchaseCount(lottos.size());
         return lottos;
@@ -72,7 +72,7 @@ public class LottoGameController {
         });
     }
 
-    private void printResult(WinningStatistics statistics, Money purchaseAmount) {
+    private void printResult(WinningStatistics statistics, PurchaseAmount purchaseAmount) {
         outputView.printStatistics(statistics);
         TotalPrize totalPrize = statistics.calculateTotalPrize();
         double returnRate = totalPrize.calculateReturnRate(purchaseAmount);

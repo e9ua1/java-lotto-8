@@ -32,50 +32,6 @@ class MoneyTest {
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessageContaining("[ERROR]");
         }
-
-        @ParameterizedTest
-        @ValueSource(ints = {500, 1500, 2300, 999})
-        @DisplayName("금액이 1,000원 단위가 아니면 예외가 발생한다")
-        void createMoneyWithInvalidUnit(int amount) {
-            assertThatThrownBy(() -> new Money(amount))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("[ERROR]")
-                    .hasMessageContaining("1,000");
-        }
-
-        @ParameterizedTest
-        @ValueSource(ints = {1000, 2000, 5000, 10000})
-        @DisplayName("1,000원 단위 금액으로 생성한다")
-        void createMoneyWithValidUnit(int amount) {
-            Money money = new Money(amount);
-
-            assertThat(money).isNotNull();
-        }
-    }
-
-    @Nested
-    @DisplayName("로또 구매 개수를 계산할 때")
-    class CalculateLottoCountTest {
-
-        @Test
-        @DisplayName("1,000원으로 1개를 구매한다")
-        void calculateLottoCountWithThousand() {
-            Money money = new Money(1000);
-
-            int count = money.calculateLottoCount();
-
-            assertThat(count).isEqualTo(1);
-        }
-
-        @Test
-        @DisplayName("8,000원으로 8개를 구매한다")
-        void calculateLottoCountWithEightThousand() {
-            Money money = new Money(8000);
-
-            int count = money.calculateLottoCount();
-
-            assertThat(count).isEqualTo(8);
-        }
     }
 
     @Nested
