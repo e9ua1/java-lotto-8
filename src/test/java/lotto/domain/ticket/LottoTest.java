@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.List;
-
 import lotto.domain.winning.BonusNumber;
 import lotto.domain.winning.WinningNumbers;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -42,8 +42,8 @@ class LottoTest {
     }
 
     @Nested
-    @DisplayName("로또 번호를 조회할 때")
-    class GetNumbersTest {
+    @DisplayName("로또 번호를 출력 형식으로 변환할 때")
+    class ToDisplayStringTest {
 
         @Test
         @DisplayName("생성 시점에 오름차순으로 정렬된다")
@@ -52,7 +52,7 @@ class LottoTest {
 
             Lotto lotto = new Lotto(unsortedNumbers);
 
-            assertThat(lotto.getNumbers()).containsExactly(1, 5, 10, 23, 30, 45);
+            assertThat(lotto.toDisplayString()).isEqualTo("[1, 5, 10, 23, 30, 45]");
         }
     }
 

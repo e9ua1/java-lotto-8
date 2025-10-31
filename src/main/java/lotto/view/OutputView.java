@@ -18,12 +18,11 @@ public class OutputView {
     }
 
     public void printLottos(Lottos lottos) {
-        lottos.getLottos()
-                .forEach(this::printLotto);
+        lottos.forEach(this::printLotto);
     }
 
     private void printLotto(Lotto lotto) {
-        System.out.println(String.format(LOTTO_NUMBERS_FORMAT, lotto.getNumbers()));
+        System.out.println(String.format(LOTTO_NUMBERS_FORMAT, lotto.toDisplayString()));
     }
 
     public void printStatistics(WinningStatistics statistics) {

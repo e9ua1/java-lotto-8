@@ -1,9 +1,9 @@
 package lotto.domain.ticket;
 
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import lotto.domain.winning.BonusNumber;
@@ -23,8 +23,8 @@ public class Lottos {
         return lottos.size();
     }
 
-    public List<Lotto> getLottos() {
-        return new ArrayList<>(lottos);
+    public void forEach(Consumer<Lotto> action) {
+        lottos.forEach(action);
     }
 
     public WinningStatistics calculateStatistics(WinningNumbers winningNumbers, BonusNumber bonusNumber) {

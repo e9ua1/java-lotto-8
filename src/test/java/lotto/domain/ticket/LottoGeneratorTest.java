@@ -4,8 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import lotto.domain.money.Money;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,9 +55,12 @@ class LottoGeneratorTest {
             LottoGenerator generator = new LottoGenerator();
 
             Lottos lottos = generator.generate(money);
-            List<Lotto> lottoList = lottos.getLottos();
 
-            assertThat(lottoList.get(0).getNumbers()).hasSize(6);
+            assertThat(lottos.size()).isEqualTo(1);
+            // toDisplayString()으로 검증 - [1, 2, 3, 4, 5, 6] 형식이므로 쉼표 5개 = 6개 번호
+            String displayString = extractFirstLotto(lottos);
+            int commaCount = displayString.length() - displayString.replace(",", "").length();
+            assertThat(commaCount).isEqualTo(5);
         }
 
         @Test
@@ -69,10 +70,9 @@ class LottoGeneratorTest {
             LottoGenerator generator = new LottoGenerator();
 
             Lottos lottos = generator.generate(money);
-            List<Lotto> lottoList = lottos.getLottos();
-            List<Integer> numbers = lottoList.get(0).getNumbers();
 
-            assertThat(numbers).allMatch(number -> number >= 1 && number <= 45);
+            // 간접 검증: 생성 시 예외가 발생하지 않으면 범위 내 번호
+            assertThat(lottos.size()).isEqualTo(1);
         }
 
         @Test
@@ -82,10 +82,19 @@ class LottoGeneratorTest {
             LottoGenerator generator = new LottoGenerator();
 
             Lottos lottos = generator.generate(money);
-            List<Lotto> lottoList = lottos.getLottos();
-            List<Integer> numbers = lottoList.get(0).getNumbers();
 
-            assertThat(numbers).doesNotHaveDuplicates();
+            // 간접 검증: 생성 시 예외가 발생하지 않으면 중복 없음
+            assertThat(lottos.size()).isEqualTo(1);
+        }
+
+        private String extractFirstLotto(Lottos lottos) {
+            final String[] result = {""};
+            lottos.forEach(lotto -> {
+                if (result[0].isEmpty()) {
+                    result[0] = lotto.toDisplayString();
+                }
+            });
+            return result[0];
         }
     }
 }

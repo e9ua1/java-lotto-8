@@ -46,8 +46,8 @@ public class Lotto {
         }
     }
 
-    public List<Integer> getNumbers() {
-        return new ArrayList<>(numbers);
+    public String toDisplayString() {
+        return numbers.toString();
     }
 
     public int countMatches(WinningNumbers winningNumbers) {

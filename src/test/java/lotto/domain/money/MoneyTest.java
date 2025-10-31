@@ -54,17 +54,62 @@ class MoneyTest {
     }
 
     @Nested
-    @DisplayName("금액을 조회할 때")
-    class GetAmountTest {
+    @DisplayName("로또 구매 개수를 계산할 때")
+    class CalculateLottoCountTest {
 
         @Test
-        @DisplayName("저장된 금액을 반환한다")
-        void getAmount() {
-            Money money = new Money(5000);
+        @DisplayName("1,000원으로 1개를 구매한다")
+        void calculateLottoCountWithThousand() {
+            Money money = new Money(1000);
 
-            int amount = money.getAmount();
+            int count = money.calculateLottoCount();
 
-            assertThat(amount).isEqualTo(5000);
+            assertThat(count).isEqualTo(1);
+        }
+
+        @Test
+        @DisplayName("8,000원으로 8개를 구매한다")
+        void calculateLottoCountWithEightThousand() {
+            Money money = new Money(8000);
+
+            int count = money.calculateLottoCount();
+
+            assertThat(count).isEqualTo(8);
+        }
+    }
+
+    @Nested
+    @DisplayName("수익률을 계산할 때")
+    class CalculateReturnRateTest {
+
+        @Test
+        @DisplayName("당첨 금액 5,000원, 구입 금액 8,000원일 때 62.5%를 반환한다")
+        void calculateReturnRate() {
+            Money money = new Money(8000);
+
+            double returnRate = money.calculateReturnRate(5000);
+
+            assertThat(returnRate).isEqualTo(62.5);
+        }
+
+        @Test
+        @DisplayName("당첨 금액 0원일 때 0%를 반환한다")
+        void calculateReturnRateWithZeroPrize() {
+            Money money = new Money(8000);
+
+            double returnRate = money.calculateReturnRate(0);
+
+            assertThat(returnRate).isEqualTo(0.0);
+        }
+
+        @Test
+        @DisplayName("당첨 금액 2,000,000,000원, 구입 금액 8,000원일 때 25,000,000%를 반환한다")
+        void calculateReturnRateWithFirstPrize() {
+            Money money = new Money(8000);
+
+            double returnRate = money.calculateReturnRate(2_000_000_000L);
+
+            assertThat(returnRate).isEqualTo(25_000_000.0);
         }
     }
 }

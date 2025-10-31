@@ -28,7 +28,11 @@ public class Money {
         }
     }
 
-    public int getAmount() {
-        return amount;
+    public int calculateLottoCount() {
+        return amount / LOTTO_PRICE;
+    }
+
+    public double calculateReturnRate(long totalPrize) {
+        return (double) totalPrize / amount * 100;
     }
 }

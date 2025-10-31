@@ -19,7 +19,7 @@ public class WinningStatistics {
 
     public double calculateReturnRate(Money purchaseAmount) {
         long totalPrize = calculateTotalPrize();
-        return (double) totalPrize / purchaseAmount.getAmount() * 100;
+        return purchaseAmount.calculateReturnRate(totalPrize);
     }
 
     private long calculateTotalPrize() {
