@@ -1,7 +1,5 @@
 package lotto.domain.ticket;
 
-import lotto.domain.winning.BonusNumber;
-import lotto.domain.winning.WinningNumbers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -10,11 +8,15 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
 
+import lotto.domain.winning.BonusNumber;
+import lotto.domain.winning.WinningNumbers;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("Lotto 테스트")
 class LottoTest {
+
     @Test
     void 로또_번호의_개수가_6개가_넘어가면_예외가_발생한다() {
         assertThatThrownBy(() -> new Lotto(List.of(1, 2, 3, 4, 5, 6, 7)))

@@ -1,17 +1,18 @@
 package lotto.domain.ticket;
 
-import lotto.domain.winning.BonusNumber;
-import lotto.domain.winning.Rank;
-import lotto.domain.winning.WinningNumbers;
-import lotto.domain.winning.WinningStatistics;
-
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import lotto.domain.winning.BonusNumber;
+import lotto.domain.winning.Rank;
+import lotto.domain.winning.WinningNumbers;
+import lotto.domain.winning.WinningStatistics;
+
 public class Lottos {
+
     private final List<Lotto> lottos;
 
     public Lottos(List<Lotto> lottos) {

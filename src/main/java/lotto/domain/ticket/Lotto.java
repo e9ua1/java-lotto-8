@@ -1,14 +1,15 @@
 package lotto.domain.ticket;
 
-import lotto.domain.winning.BonusNumber;
-import lotto.domain.winning.WinningNumbers;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import lotto.domain.winning.BonusNumber;
+import lotto.domain.winning.WinningNumbers;
+
 public class Lotto {
+
     private static final int LOTTO_NUMBER_SIZE = 6;
     private static final int MIN_LOTTO_NUMBER = 1;
     private static final int MAX_LOTTO_NUMBER = 45;

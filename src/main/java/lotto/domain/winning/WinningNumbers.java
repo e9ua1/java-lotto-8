@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class WinningNumbers {
+
     private static final int WINNING_NUMBER_SIZE = 6;
     private static final int MIN_LOTTO_NUMBER = 1;
     private static final int MAX_LOTTO_NUMBER = 45;

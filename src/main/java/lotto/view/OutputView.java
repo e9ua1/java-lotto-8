@@ -1,13 +1,14 @@
 package lotto.view;
 
+import java.util.List;
+
 import lotto.domain.ticket.Lotto;
 import lotto.domain.ticket.Lottos;
 import lotto.domain.winning.Rank;
 import lotto.domain.winning.WinningStatistics;
 
-import java.util.List;
-
 public class OutputView {
+
     private static final String PURCHASE_COUNT_FORMAT = "\n%d개를 구매했습니다.";
     private static final String LOTTO_NUMBERS_FORMAT = "%s";
     private static final String STATISTICS_HEADER = "\n당첨 통계\n---";

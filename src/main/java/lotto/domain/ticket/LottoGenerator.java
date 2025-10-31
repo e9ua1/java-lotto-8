@@ -1,12 +1,14 @@
 package lotto.domain.ticket;
 
 import camp.nextstep.edu.missionutils.Randoms;
-import lotto.domain.money.Money;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import lotto.domain.money.Money;
+
 public class LottoGenerator {
+
     private static final int LOTTO_PRICE = 1000;
     private static final int LOTTO_NUMBER_START = 1;
     private static final int LOTTO_NUMBER_END = 45;

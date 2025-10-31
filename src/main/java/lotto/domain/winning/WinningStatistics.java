@@ -1,11 +1,12 @@
 package lotto.domain.winning;
 
-import lotto.domain.money.Money;
-
 import java.util.EnumMap;
 import java.util.Map;
 
+import lotto.domain.money.Money;
+
 public class WinningStatistics {
+
     private final Map<Rank, Long> rankCounts;
 
     public WinningStatistics(Map<Rank, Long> rankCounts) {

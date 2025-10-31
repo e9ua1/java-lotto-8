@@ -1,14 +1,15 @@
 package lotto.domain.ticket;
 
-import lotto.domain.winning.BonusNumber;
-import lotto.domain.winning.Rank;
-import lotto.domain.winning.WinningNumbers;
-import lotto.domain.winning.WinningStatistics;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+
+import lotto.domain.winning.BonusNumber;
+import lotto.domain.winning.Rank;
+import lotto.domain.winning.WinningNumbers;
+import lotto.domain.winning.WinningStatistics;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

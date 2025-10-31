@@ -1,6 +1,7 @@
 package lotto.domain.winning;
 
 public class BonusNumber {
+
     private static final int MIN_LOTTO_NUMBER = 1;
     private static final int MAX_LOTTO_NUMBER = 45;
 

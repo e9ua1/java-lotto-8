@@ -1,5 +1,8 @@
 package lotto.controller;
 
+import java.util.List;
+import java.util.function.Supplier;
+
 import lotto.domain.money.Money;
 import lotto.domain.ticket.LottoGenerator;
 import lotto.domain.ticket.Lottos;
@@ -10,10 +13,8 @@ import lotto.view.InputParser;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
-import java.util.List;
-import java.util.function.Supplier;
-
 public class LottoGameController {
+
     private final InputView inputView;
     private final OutputView outputView;
     private final LottoGenerator lottoGenerator;
