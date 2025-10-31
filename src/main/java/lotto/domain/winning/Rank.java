@@ -11,6 +11,8 @@ public enum Rank {
     FIFTH(3, false, 5_000, "3개 일치"),
     NONE(0, false, 0, "낙첨");
 
+    private static final int MINIMUM_WINNING_COUNT = 3;
+
     private final int matchCount;
     private final boolean bonusMatch;
     private final int prize;
@@ -24,20 +26,22 @@ public enum Rank {
     }
 
     public static Rank of(int matchCount, boolean bonusMatch) {
+        if (matchCount < MINIMUM_WINNING_COUNT) {
+            return NONE;
+        }
+
         return Arrays.stream(values())
+                .filter(rank -> rank != NONE)
                 .filter(rank -> rank.matches(matchCount, bonusMatch))
                 .findFirst()
                 .orElse(NONE);
     }
 
     private boolean matches(int matchCount, boolean bonusMatch) {
-        if (this == SECOND) {
-            return this.matchCount == matchCount && bonusMatch;
+        if (this.matchCount != matchCount) {
+            return false;
         }
-        if (this == NONE) {
-            return matchCount < FIFTH.matchCount;
-        }
-        return this.matchCount == matchCount;
+        return this.bonusMatch == bonusMatch;
     }
 
     public int getPrize() {
