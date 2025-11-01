@@ -1,13 +1,13 @@
 package lotto.domain.winning;
 
-import java.util.EnumMap;
-import java.util.Map;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import lotto.domain.money.Money;
+import java.util.EnumMap;
+import java.util.Map;
+
+import lotto.domain.money.PurchaseAmount;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,9 +25,9 @@ class WinningStatisticsTest {
             rankCounts.put(Rank.FIFTH, 1L);
             WinningStatistics statistics = new WinningStatistics(rankCounts);
 
-            TotalPrize totalPrize = statistics.calculateTotalPrize();
+            long totalPrize = statistics.calculateTotalPrize();
 
-            assertThat(totalPrize.getAmount()).isEqualTo(5_000);
+            assertThat(totalPrize).isEqualTo(5_000);
         }
 
         @Test
@@ -37,9 +37,9 @@ class WinningStatisticsTest {
             rankCounts.put(Rank.FIRST, 1L);
             WinningStatistics statistics = new WinningStatistics(rankCounts);
 
-            TotalPrize totalPrize = statistics.calculateTotalPrize();
+            long totalPrize = statistics.calculateTotalPrize();
 
-            assertThat(totalPrize.getAmount()).isEqualTo(2_000_000_000);
+            assertThat(totalPrize).isEqualTo(2_000_000_000);
         }
 
         @Test
@@ -50,9 +50,9 @@ class WinningStatisticsTest {
             rankCounts.put(Rank.FOURTH, 1L);
             WinningStatistics statistics = new WinningStatistics(rankCounts);
 
-            TotalPrize totalPrize = statistics.calculateTotalPrize();
+            long totalPrize = statistics.calculateTotalPrize();
 
-            assertThat(totalPrize.getAmount()).isEqualTo(60_000);
+            assertThat(totalPrize).isEqualTo(60_000);
         }
 
         @Test
@@ -61,9 +61,9 @@ class WinningStatisticsTest {
             Map<Rank, Long> rankCounts = new EnumMap<>(Rank.class);
             WinningStatistics statistics = new WinningStatistics(rankCounts);
 
-            TotalPrize totalPrize = statistics.calculateTotalPrize();
+            long totalPrize = statistics.calculateTotalPrize();
 
-            assertThat(totalPrize.getAmount()).isEqualTo(0);
+            assertThat(totalPrize).isEqualTo(0);
         }
     }
 
@@ -77,10 +77,9 @@ class WinningStatisticsTest {
             Map<Rank, Long> rankCounts = new EnumMap<>(Rank.class);
             rankCounts.put(Rank.FIFTH, 1L);
             WinningStatistics statistics = new WinningStatistics(rankCounts);
-            Money purchaseAmount = new Money(8000);
+            PurchaseAmount purchaseAmount = new PurchaseAmount(8000);
 
-            TotalPrize totalPrize = statistics.calculateTotalPrize();
-            double returnRate = totalPrize.calculateReturnRate(purchaseAmount);
+            double returnRate = statistics.calculateReturnRate(purchaseAmount);
 
             assertThat(returnRate).isEqualTo(62.5);
         }
@@ -91,10 +90,9 @@ class WinningStatisticsTest {
             Map<Rank, Long> rankCounts = new EnumMap<>(Rank.class);
             rankCounts.put(Rank.FIRST, 1L);
             WinningStatistics statistics = new WinningStatistics(rankCounts);
-            Money purchaseAmount = new Money(8000);
+            PurchaseAmount purchaseAmount = new PurchaseAmount(8000);
 
-            TotalPrize totalPrize = statistics.calculateTotalPrize();
-            double returnRate = totalPrize.calculateReturnRate(purchaseAmount);
+            double returnRate = statistics.calculateReturnRate(purchaseAmount);
 
             assertThat(returnRate).isEqualTo(25_000_000.0);
         }
@@ -106,10 +104,9 @@ class WinningStatisticsTest {
             rankCounts.put(Rank.FIFTH, 2L);
             rankCounts.put(Rank.FOURTH, 1L);
             WinningStatistics statistics = new WinningStatistics(rankCounts);
-            Money purchaseAmount = new Money(8000);
+            PurchaseAmount purchaseAmount = new PurchaseAmount(8000);
 
-            TotalPrize totalPrize = statistics.calculateTotalPrize();
-            double returnRate = totalPrize.calculateReturnRate(purchaseAmount);
+            double returnRate = statistics.calculateReturnRate(purchaseAmount);
 
             assertThat(returnRate).isEqualTo(750.0);
         }
@@ -119,10 +116,9 @@ class WinningStatisticsTest {
         void calculateReturnRateWithNoWinning() {
             Map<Rank, Long> rankCounts = new EnumMap<>(Rank.class);
             WinningStatistics statistics = new WinningStatistics(rankCounts);
-            Money purchaseAmount = new Money(8000);
+            PurchaseAmount purchaseAmount = new PurchaseAmount(8000);
 
-            TotalPrize totalPrize = statistics.calculateTotalPrize();
-            double returnRate = totalPrize.calculateReturnRate(purchaseAmount);
+            double returnRate = statistics.calculateReturnRate(purchaseAmount);
 
             assertThat(returnRate).isEqualTo(0.0);
         }

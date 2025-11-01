@@ -7,7 +7,6 @@ import lotto.domain.money.PurchaseAmount;
 import lotto.domain.ticket.LottoGenerator;
 import lotto.domain.ticket.Lottos;
 import lotto.domain.winning.BonusNumber;
-import lotto.domain.winning.TotalPrize;
 import lotto.domain.winning.WinningNumbers;
 import lotto.domain.winning.WinningStatistics;
 import lotto.view.InputParser;
@@ -29,7 +28,7 @@ public class LottoGameController {
     public void run() {
         PurchaseAmount purchaseAmount = readPurchaseAmount();
         Lottos lottos = generateLottos(purchaseAmount);
-        printLottos(lottos);
+        outputView.printLottos(lottos);
 
         WinningNumbers winningNumbers = readWinningNumbers();
         BonusNumber bonusNumber = readBonusNumber(winningNumbers);
@@ -52,10 +51,6 @@ public class LottoGameController {
         return lottos;
     }
 
-    private void printLottos(Lottos lottos) {
-        outputView.printLottos(lottos);
-    }
-
     private WinningNumbers readWinningNumbers() {
         return retry(() -> {
             String input = inputView.readWinningNumbers();
@@ -74,8 +69,7 @@ public class LottoGameController {
 
     private void printResult(WinningStatistics statistics, PurchaseAmount purchaseAmount) {
         outputView.printStatistics(statistics);
-        TotalPrize totalPrize = statistics.calculateTotalPrize();
-        double returnRate = totalPrize.calculateReturnRate(purchaseAmount);
+        double returnRate = statistics.calculateReturnRate(purchaseAmount);
         outputView.printReturnRate(returnRate);
     }
 
