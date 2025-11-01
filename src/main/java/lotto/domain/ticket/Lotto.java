@@ -12,9 +12,18 @@ public class Lotto {
     private final List<Integer> numbers;
 
     public Lotto(List<Integer> numbers) {
-        LottoNumbers lottoNumbers = new LottoNumbers(numbers);
-        this.numbers = new ArrayList<>(lottoNumbers.getNumbers());
-        Collections.sort(this.numbers);
+        validateNumbers(numbers);
+        this.numbers = createSortedNumbers(numbers);
+    }
+
+    private void validateNumbers(List<Integer> numbers) {
+        new LottoNumbers(numbers);
+    }
+
+    private List<Integer> createSortedNumbers(List<Integer> numbers) {
+        List<Integer> sortedNumbers = new ArrayList<>(numbers);
+        Collections.sort(sortedNumbers);
+        return sortedNumbers;
     }
 
     public String toDisplayString() {
