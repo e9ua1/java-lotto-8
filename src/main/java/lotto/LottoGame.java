@@ -20,9 +20,7 @@ public class LottoGame {
     private final LottoGenerator lottoGenerator;
 
     public LottoGame() {
-        this.inputView = new InputView();
-        this.outputView = new OutputView();
-        this.lottoGenerator = new LottoGenerator();
+        this(new InputView(), new OutputView(), new LottoGenerator());
     }
 
     public LottoGame(InputView inputView, OutputView outputView, LottoGenerator lottoGenerator) {
