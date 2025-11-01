@@ -28,13 +28,11 @@ public class LottoGameController {
     public void run() {
         PurchaseAmount purchaseAmount = readPurchaseAmount();
         Lottos lottos = generateLottos(purchaseAmount);
-        outputView.printLottos(lottos);
 
         WinningNumbers winningNumbers = readWinningNumbers();
         BonusNumber bonusNumber = readBonusNumber(winningNumbers);
 
-        WinningStatistics statistics = lottos.calculateStatistics(winningNumbers, bonusNumber);
-        printResult(statistics, purchaseAmount);
+        printResult(lottos, winningNumbers, bonusNumber, purchaseAmount);
     }
 
     private PurchaseAmount readPurchaseAmount() {
@@ -48,6 +46,7 @@ public class LottoGameController {
     private Lottos generateLottos(PurchaseAmount purchaseAmount) {
         Lottos lottos = lottoGenerator.generate(purchaseAmount);
         outputView.printPurchaseCount(lottos.size());
+        outputView.printLottos(lottos);
         return lottos;
     }
 
@@ -67,7 +66,9 @@ public class LottoGameController {
         });
     }
 
-    private void printResult(WinningStatistics statistics, PurchaseAmount purchaseAmount) {
+    private void printResult(Lottos lottos, WinningNumbers winningNumbers, BonusNumber bonusNumber,
+            PurchaseAmount purchaseAmount) {
+        WinningStatistics statistics = lottos.calculateStatistics(winningNumbers, bonusNumber);
         outputView.printStatistics(statistics);
         double returnRate = statistics.calculateReturnRate(purchaseAmount);
         outputView.printReturnRate(returnRate);
