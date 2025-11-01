@@ -1,4 +1,4 @@
-package lotto.controller;
+package lotto;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -13,19 +13,25 @@ import lotto.view.InputParser;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
-public class LottoGameController {
+public class LottoGame {
 
     private final InputView inputView;
     private final OutputView outputView;
     private final LottoGenerator lottoGenerator;
 
-    public LottoGameController(InputView inputView, OutputView outputView, LottoGenerator lottoGenerator) {
+    public LottoGame() {
+        this.inputView = new InputView();
+        this.outputView = new OutputView();
+        this.lottoGenerator = new LottoGenerator();
+    }
+
+    public LottoGame(InputView inputView, OutputView outputView, LottoGenerator lottoGenerator) {
         this.inputView = inputView;
         this.outputView = outputView;
         this.lottoGenerator = lottoGenerator;
     }
 
-    public void run() {
+    public void start() {
         PurchaseAmount purchaseAmount = readPurchaseAmount();
         Lottos lottos = generateLottos(purchaseAmount);
 
