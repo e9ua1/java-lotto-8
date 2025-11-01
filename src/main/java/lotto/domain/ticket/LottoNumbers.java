@@ -6,8 +6,6 @@ import java.util.List;
 public class LottoNumbers {
 
     private static final int LOTTO_NUMBER_SIZE = 6;
-    private static final int MIN_LOTTO_NUMBER = 1;
-    private static final int MAX_LOTTO_NUMBER = 45;
 
     private final List<Integer> numbers;
 
@@ -35,7 +33,7 @@ public class LottoNumbers {
     }
 
     private void validateRange(List<Integer> numbers) {
-        if (numbers.stream().anyMatch(number -> number < MIN_LOTTO_NUMBER || number > MAX_LOTTO_NUMBER)) {
+        if (numbers.stream().anyMatch(number -> !LottoNumber.isInRange(number))) {
             throw new IllegalArgumentException("[ERROR] 로또 번호는 1부터 45 사이의 숫자여야 합니다.");
         }
     }
