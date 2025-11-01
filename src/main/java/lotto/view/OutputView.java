@@ -14,7 +14,7 @@ public class OutputView {
     private static final String RETURN_RATE_FORMAT = "총 수익률은 %.1f%%입니다.";
 
     public void printPurchaseCount(int count) {
-        System.out.println(String.format(PURCHASE_COUNT_FORMAT, count));
+        System.out.printf(PURCHASE_COUNT_FORMAT + "%n", count);
     }
 
     public void printLottos(Lottos lottos) {
@@ -22,7 +22,7 @@ public class OutputView {
     }
 
     private void printLotto(Lotto lotto) {
-        System.out.println(String.format(LOTTO_NUMBERS_FORMAT, lotto.toDisplayString()));
+        System.out.printf(LOTTO_NUMBERS_FORMAT + "%n", lotto.toDisplayString());
     }
 
     public void printStatistics(WinningStatistics statistics) {
@@ -36,14 +36,14 @@ public class OutputView {
 
     private void printRank(WinningStatistics statistics, Rank rank) {
         long count = statistics.getCountByRank(rank);
-        System.out.println(String.format(RANK_FORMAT,
+        System.out.printf(RANK_FORMAT + "%n",
                 rank.getDescription(),
                 rank.getPrize(),
-                count));
+                count);
     }
 
     public void printReturnRate(double returnRate) {
-        System.out.println(String.format(RETURN_RATE_FORMAT, returnRate));
+        System.out.printf(RETURN_RATE_FORMAT + "%n", returnRate);
     }
 
     public void printErrorMessage(String message) {
