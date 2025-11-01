@@ -1,12 +1,24 @@
 package lotto.domain.money;
 
-public class PurchaseAmount extends Money {
+public class PurchaseAmount {
 
     private static final int LOTTO_PRICE = 1000;
+    private final int amount;
 
     public PurchaseAmount(int amount) {
-        super(amount);
+        validate(amount);
+        this.amount = amount;
+    }
+
+    private void validate(int amount) {
+        validatePositive(amount);
         validateUnit(amount);
+    }
+
+    private void validatePositive(int amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("[ERROR] 구입 금액은 0보다 커야 합니다.");
+        }
     }
 
     private void validateUnit(int amount) {
@@ -16,6 +28,10 @@ public class PurchaseAmount extends Money {
     }
 
     public int calculateLottoCount() {
-        return getAmount() / LOTTO_PRICE;
+        return amount / LOTTO_PRICE;
+    }
+
+    public double calculateReturnRate(long totalPrize) {
+        return (double) totalPrize / amount * 100;
     }
 }
