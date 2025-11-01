@@ -5,7 +5,6 @@
 - 객체지향 설계: 관련 함수를 묶어 클래스를 만들고, 객체들이 협력하여 하나의 큰 기능을 수행하도록 한다
 - TDD 실천: 클래스와 함수에 대한 단위 테스트를 통해 의도한 대로 정확하게 작동하는 영역을 확보한다
 - Red-Green-Refactor: TDD 사이클을 체화한다
-- 피드백 반영: 2주 차 공통 피드백(Tell Don't Ask, 일급 컬렉션, Getter 최소화)을 최대한 반영한다
 
 ## 기능 요구 사항
 
@@ -34,12 +33,12 @@
 - 구매한 각 로또와 당첨 번호를 비교하여 일치 개수를 계산한다
 - 일치 개수와 보너스 번호 일치 여부로 당첨 등수를 판정한다
 - 당첨 기준은 다음과 같다:
-    - 1등: 6개 번호 일치 / 2,000,000,000원
-    - 2등: 5개 번호 + 보너스 번호 일치 / 30,000,000원
-    - 3등: 5개 번호 일치 / 1,500,000원
-    - 4등: 4개 번호 일치 / 50,000원
-    - 5등: 3개 번호 일치 / 5,000원
-    - 낙첨: 3개 미만 일치 / 0원
+  - 1등: 6개 번호 일치 / 2,000,000,000원
+  - 2등: 5개 번호 + 보너스 번호 일치 / 30,000,000원
+  - 3등: 5개 번호 일치 / 1,500,000원
+  - 4등: 4개 번호 일치 / 50,000원
+  - 5등: 3개 번호 일치 / 5,000원
+  - 낙첨: 3개 미만 일치 / 0원
 
 ### 6. 당첨 통계 출력
 - 등수별 당첨 개수를 출력한다
@@ -107,13 +106,13 @@
 
 ### 도메인 기능
 
-#### 1. 로또 번호 관리 (Lotto)
-- [x] 로또는 6개의 번호를 가진다
-- [x] 로또 번호는 1~45 범위의 숫자다
-- [x] 로또 번호는 중복되지 않는다
-- [x] 로또 번호는 생성 시점에 오름차순으로 정렬된다
-- [x] 로또는 당첨 번호와 일치하는 개수를 스스로 계산한다
-- [x] 로또는 보너스 번호 포함 여부를 스스로 판단한다
+#### 1. 로또 번호 관리 (Lotto, LottoNumbers)
+- [x] 로또 번호는 6개여야 한다 (LottoNumbers)
+- [x] 로또 번호는 1~45 범위의 숫자다 (LottoNumbers)
+- [x] 로또 번호는 중복되지 않는다 (LottoNumbers)
+- [x] 로또 번호는 생성 시점에 오름차순으로 정렬된다 (Lotto)
+- [x] 로또는 당첨 번호와 일치하는 개수를 스스로 계산한다 (Lotto)
+- [x] 로또는 보너스 번호 포함 여부를 스스로 판단한다 (Lotto)
 
 #### 2. 당첨 번호 관리 (WinningNumbers)
 - [x] 당첨 번호는 6개의 번호를 가진다
@@ -135,9 +134,11 @@
 - [x] 각 등수는 해당하는 상금을 반환한다
 - [x] 낙첨 여부를 확인한다
 
-#### 5. 구입 금액 관리 (Money)
-- [x] 구입 금액은 양수여야 한다
-- [x] 구입 금액은 1,000원 단위여야 한다
+#### 5. 구입 금액 관리 (Money, PurchaseAmount)
+- [x] 구입 금액은 양수여야 한다 (Money)
+- [x] 구입 금액은 1,000원 단위여야 한다 (PurchaseAmount)
+- [x] 구입 금액으로 로또 개수를 계산한다 (PurchaseAmount)
+- [x] 수익률을 계산한다 (Money)
 
 #### 6. 로또 생성 (LottoGenerator)
 - [x] 구입 금액으로 구매 가능한 로또 개수를 계산한다
@@ -150,11 +151,11 @@
 - [x] 각 로또의 일치 개수와 보너스 일치 여부로 등수를 판정한다
 - [x] 등수별 당첨 개수를 집계한다
 
-#### 8. 당첨 통계 (WinningStatistics)
-- [x] 등수별 당첨 개수를 저장한다
-- [x] 등수별 당첨 개수와 상금으로 총 당첨 금액을 계산한다
-- [x] 수익률을 계산한다 (총 당첨 금액 / 구입 금액) * 100
-- [x] 특정 등수의 당첨 개수를 반환한다
+#### 8. 당첨 통계 (WinningStatistics, TotalPrize)
+- [x] 등수별 당첨 개수를 저장한다 (WinningStatistics)
+- [x] 특정 등수의 당첨 개수를 반환한다 (WinningStatistics)
+- [x] 등수별 당첨 개수와 상금으로 총 당첨 금액을 계산한다 (WinningStatistics → TotalPrize)
+- [x] 수익률을 계산한다 (TotalPrize)
 
 ### 입출력 기능
 
@@ -191,15 +192,18 @@ lotto
 ├── domain
 │   ├── ticket
 │   │   ├── Lotto.java
+│   │   ├── LottoNumbers.java
 │   │   ├── Lottos.java
 │   │   └── LottoGenerator.java
 │   ├── winning
 │   │   ├── WinningNumbers.java
 │   │   ├── BonusNumber.java
 │   │   ├── Rank.java
-│   │   └── WinningStatistics.java
+│   │   ├── WinningStatistics.java
+│   │   └── TotalPrize.java
 │   └── money
-│       └── Money.java
+│       ├── Money.java
+│       └── PurchaseAmount.java
 └── view
     ├── InputView.java
     ├── OutputView.java
@@ -220,58 +224,77 @@ lotto
 │  │ - amount     │                                           │
 │  ├──────────────┤                                           │
 │  │ + Money()    │                                           │
-│  │ + getAmount()│                                           │
+│  │ + calculateReturnRate()                                  │
 │  └──────────────┘                                           │
-│         │                                                   │
+│         △                                                   │
+│         │ 상속                                               │
+│  ┌──────────────────┐                                       │
+│  │ PurchaseAmount   │                                       │
+│  ├──────────────────┤                                       │
+│  │                  │                                       │
+│  ├──────────────────┤                                       │
+│  │ + PurchaseAmount()                                       │
+│  │ + calculateLottoCount()                                  │
+│  └──────────────────┘                                       │
 │         │ 사용                                               │
 │         ↓                                                   │
-│  ┌──────────────────┐          ┌─────────────┐              │
-│  │ LottoGenerator   │          │   Lotto     │              │
-│  ├──────────────────┤          ├─────────────┤              │
-│  │                  │  생성 →   │ - numbers   │              │
-│  ├──────────────────┤          ├─────────────┤              │
-│  │ + generate()     │          │ + Lotto()   │              │
-│  └──────────────────┘          │ + countMatches()           │
-│         │                      │ + containsBonus()          │
-│         │ 생성                  │ + getNumbers()             │
-│         ↓                      └─────────────┘              │
-│  ┌──────────────────┐                 │                     │
-│  │     Lottos       │ ◆───────────────┘                     │
-│  ├──────────────────┤  포함 (일급 컬렉션)                       │
-│  │ - lottos         │                                       │
-│  ├──────────────────┤                                       │
-│  │ + size()         │                                       │
-│  │ + getLottos()    │                                       │
-│  │ + calculateStatistics()                                  │
-│  └──────────────────┘                                       │
-│         │                                                   │
-│         │ 계산                                               │
-│         ↓                                                   │
-│  ┌─────────────────────┐      ┌──────────────┐              │
-│  │ WinningStatistics   │      │     Rank     │              │
-│  ├─────────────────────┤      ├──────────────┤              │
-│  │ - rankCounts        │ 사용→ │ FIRST        │              │
-│  ├─────────────────────┤      │ SECOND       │              │
-│  │ + getCountByRank()  │      │ THIRD        │              │
-│  │ + calculateReturnRate()    │ FOURTH       │              │
-│  └─────────────────────┘      │ FIFTH        │              │
-│                               │ NONE         │              │
-│  ┌──────────────────┐         ├──────────────┤              │
-│  │ WinningNumbers   │         │ + of()       │              │
-│  ├──────────────────┤         │ + getPrize() │              │
-│  │ - numbers        │         │ + isWinning()│              │
-│  ├──────────────────┤         │ + getDescription()          │
-│  │ + contains()     │         └──────────────┘              │
-│  └──────────────────┘                                       │
-│         △                                                   │
-│         │ 참조                                               │
 │  ┌──────────────────┐                                       │
-│  │  BonusNumber     │                                       │
+│  │ LottoGenerator   │                                       │
 │  ├──────────────────┤                                       │
-│  │ - number         │                                       │
+│  │                  │                                       │
 │  ├──────────────────┤                                       │
-│  │ + getValue()     │                                       │
+│  │ + generate()     │                                       │
 │  └──────────────────┘                                       │
+│         │ 생성                                               │
+│         ↓                                                   │
+│  ┌──────────────────┐          ┌──────────────┐             │
+│  │     Lottos       │          │LottoNumbers  │             │
+│  ├──────────────────┤          ├──────────────┤             │
+│  │ - lottos         │          │ - numbers    │             │
+│  ├──────────────────┤          ├──────────────┤             │
+│  │ + size()         │          │ + contains() │             │
+│  │ + forEach()      │          │ + getNumbers()             │
+│  │ + calculateStatistics()     └──────────────┘             │
+│  └──────────────────┘                 △                     │
+│         │ ◆                           │ 위임                 │
+│         │                       ┌─────┴─────┐               │
+│         ↓                       │           │               │
+│  ┌─────────────┐         ┌──────────┐ ┌──────────────┐      │
+│  │   Lotto     │         │  Lotto   │ │WinningNumbers│      │
+│  ├─────────────┤         ├──────────┤ ├──────────────┤      │
+│  │ - numbers   │         │- numbers │ │ - lottoNumbers      │
+│  ├─────────────┤         ├──────────┤ ├──────────────┤      │
+│  │ + countMatches()      │+ Lotto() │ │+ contains()  │      │
+│  │ + containsBonus()     │          │ └──────────────┘      │
+│  │ + toDisplayString()   └──────────┘       △               │
+│  └─────────────┘                            │ 참조           │
+│                                       ┌─────┴────┐          │
+│  ┌─────────────────────┐              │          │          │
+│  │ WinningStatistics   │       ┌──────────────┐  │          │
+│  ├─────────────────────┤       │ BonusNumber  │  │          │
+│  │ - rankCounts        │       ├──────────────┤  │          │
+│  ├─────────────────────┤       │ - number     │  │          │
+│  │ + getCountByRank()  │       ├──────────────┤  │          │
+│  │ + calculateTotalPrize()     │ + getValue() │  │          │
+│  └─────────────────────┘       └──────────────┘  │          │
+│         │                                        │          │
+│         │ 생성                                    │          │
+│         ↓                                        │          │
+│  ┌─────────────────┐            ┌──────────────┐ │          │
+│  │   TotalPrize    │            │     Rank     │ │          │
+│  ├─────────────────┤            ├──────────────┤ │          │
+│  │ - amount        │    사용 →   │ FIRST        │ │          │
+│  ├─────────────────┤            │ SECOND       │ │          │
+│  │ + getAmount()   │            │ THIRD        │ │          │
+│  │ + calculateReturnRate()      │ FOURTH       │ │          │
+│  └─────────────────┘            │ FIFTH        │ │          │
+│                                 │ NONE         │ │          │
+│                                 ├──────────────┤ │          │
+│                                 │ + of()       │ │          │
+│                                 │ + getPrize() │ │          │
+│                                 │ + isWinning()│ │          │
+│                                 │ + getDescription()        │
+│                                 └──────────────┘            │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -343,16 +366,20 @@ lotto
    │
    │ 1. 구입 금액 입력
    ↓
-[InputView] ─────→ [InputParser] ─────→ [Money]
-   │                                        │
+[InputView] ─────→ [InputParser] ─────→ [PurchaseAmount]
+   │                                        │ (Money 상속)
    │                                        │ 2. 금액 검증
+   │                                        │   - 양수 검증
+   │                                        │   - 1,000원 단위 검증
    │                                        ↓
    │                               [LottoGenerator]
    │                                        │
    │                                        │ 3. 로또 생성
+   │                                        │   - 개수 계산
+   │                                        │   - 1~45 중복없이 6개
    │                                        ↓
    │                                     [Lotto] ×N
-   │                                        │
+   │                                        │ (LottoNumbers로 검증)
    │                                        │ 4. 일급 컬렉션으로 묶기
    │                                        ↓
    │                                    [Lottos]
@@ -369,7 +396,7 @@ lotto
    │ 1. 당첨 번호 입력
    ↓
 [InputView] ─────→ [InputParser] ─────→ [WinningNumbers]
-   │                                            │
+   │                                            │ (LottoNumbers로 검증)
    │ 2. 보너스 번호 입력                            │
    ↓                                            │
 [InputView] ─────→ [InputParser] ─────→ [BonusNumber]
@@ -401,11 +428,15 @@ lotto
                     ↓
             [WinningStatistics]
                     │
-                    │ 6. 수익률 계산
+                    │ 6. 총 상금 계산
                     ↓
-            calculateReturnRate(Money)
+              [TotalPrize]
                     │
-                    │ 7. 결과 출력
+                    │ 7. 수익률 계산
+                    ↓
+            calculateReturnRate(PurchaseAmount)
+                    │
+                    │ 8. 결과 출력
                     ↓
               [OutputView]
 ```
@@ -442,9 +473,14 @@ lotto
 
 #### Domain 객체
 ```
+LottoNumbers
+├─ 책임: 로또 번호 6개에 대한 검증
+├─ 협력: Lotto, WinningNumbers에서 위임받아 사용
+└─ 원칙: 공통 검증 로직 재사용
+
 Lotto
-├─ 책임: 로또 한 장의 번호 관리
-├─ 협력: WinningNumbers, BonusNumber와 비교
+├─ 책임: 로또 한 장의 번호 관리 + 정렬
+├─ 협력: LottoNumbers로 검증, WinningNumbers/BonusNumber와 비교
 └─ 원칙: Tell, Don't Ask (스스로 계산)
 
 Lottos (일급 컬렉션)
@@ -454,7 +490,7 @@ Lottos (일급 컬렉션)
 
 WinningNumbers
 ├─ 책임: 당첨 번호 6개 관리
-├─ 협력: Lotto의 일치 개수 계산에 협력
+├─ 협력: LottoNumbers로 검증, Lotto의 일치 개수 계산에 협력
 └─ 원칙: 불변 객체
 
 BonusNumber
@@ -468,18 +504,28 @@ Rank (Enum)
 └─ 원칙: 전략 패턴 (Enum으로 구현)
 
 WinningStatistics
-├─ 책임: 등수별 통계 + 수익률 계산
-├─ 협력: Money와 함께 수익률 계산
+├─ 책임: 등수별 통계 집계
+├─ 협력: Rank로 통계 집계, TotalPrize 생성
 └─ 원칙: 값 객체 (불변)
 
+TotalPrize
+├─ 책임: 총 상금 + 수익률 계산
+├─ 협력: Money(PurchaseAmount)와 함께 수익률 계산
+└─ 원칙: 단일 책임 (계산 로직 분리)
+
 Money
-├─ 책임: 금액 검증
-├─ 협력: LottoGenerator에게 금액 제공
+├─ 책임: 금액 검증 (양수)
+├─ 협력: PurchaseAmount의 부모 클래스
 └─ 원칙: 원시값 포장
+
+PurchaseAmount (Money 상속)
+├─ 책임: 구입 금액 검증 (1,000원 단위) + 로또 개수 계산
+├─ 협력: LottoGenerator에게 개수 정보 제공
+└─ 원칙: 상속을 통한 확장
 
 LottoGenerator
 ├─ 책임: 로또 생성
-├─ 협력: Money로 개수 계산, Lotto 생성
+├─ 협력: PurchaseAmount로 개수 계산, Lotto 생성
 └─ 원칙: 단일 책임
 ```
 
@@ -506,29 +552,6 @@ LottoGameController
 └─ 원칙: 추상화 수준 통일 + 예외 처리
 ```
 
-## TDD 구현 순서
-
-### Phase 1: 핵심 도메인 (Bottom-Up)
-1. Lotto - 가장 작은 단위
-2. Rank - Enum 로직
-3. Money - 원시값 포장
-4. WinningNumbers - 당첨 번호
-5. BonusNumber - 보너스 번호
-6. LottoGenerator - 로또 생성
-
-### Phase 2: 컬렉션 & 계산
-7. Lottos - 일급 컬렉션
-8. WinningStatistics - 수익률 계산
-
-### Phase 3: 입출력
-9. InputParser - 문자열 파싱
-10. InputView - 입력 받기
-11. OutputView - 출력 형식
-
-### Phase 4: 통합
-12. LottoGameController - 흐름 제어
-13. Application - 메인 실행
-
 ## 설계 원칙
 
 ### 1. Tell, Don't Ask
@@ -539,15 +562,16 @@ LottoGameController
 
 ### 2. 단일 책임 원칙 (SRP)
 - 각 클래스는 명확한 하나의 책임만 가짐
-- 예: Money는 금액 검증만, LottoGenerator는 로또 생성만
+- 예: Money는 금액 검증, PurchaseAmount는 1,000원 단위 검증 + 로또 개수 계산
+- 예: WinningStatistics는 통계 집계, TotalPrize는 수익률 계산
 
 ### 3. 원시값 포장
 - 의미 있는 값은 객체로 포장하여 검증 로직 캡슐화
-- 예: Money, BonusNumber
+- 예: Money (양수 검증), PurchaseAmount (1,000원 단위 검증), BonusNumber (범위 + 중복 검증)
 
 ### 4. 일급 컬렉션
 - 컬렉션을 감싸서 컬렉션 기반 행위를 캡슐화
-- 예: Lottos가 당첨 결과 계산
+- 예: Lottos가 당첨 결과 계산, 통계 집계
 
 ### 5. Enum 활용
 - 고정된 값과 로직을 Enum으로 표현
@@ -555,7 +579,16 @@ LottoGameController
 
 ### 6. 생성 시점 검증
 - 불변식을 생성자에서 보장하여 항상 유효한 상태 유지
-- 예: Lotto, WinningNumbers, BonusNumber
+- 예: LottoNumbers (6개, 1~45, 중복 없음 검증)
+- 예: Lotto, WinningNumbers (LottoNumbers에 검증 위임), BonusNumber (중복 검증)
+
+### 7. 위임을 통한 재사용
+- 공통 로직을 별도 클래스로 분리하여 위임
+- 예: Lotto와 WinningNumbers 모두 LottoNumbers에 검증 위임
+
+### 8. 상속을 통한 확장
+- 기본 기능을 상속받아 추가 기능 구현
+- 예: PurchaseAmount가 Money를 상속받아 1,000원 단위 검증 추가
 
 ## 프로그래밍 요구사항
 
