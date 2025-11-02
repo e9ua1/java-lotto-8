@@ -3,6 +3,7 @@ package lotto.domain.ticket;
 import java.util.List;
 
 import lotto.domain.winning.BonusNumber;
+import lotto.domain.winning.Rank;
 import lotto.domain.winning.WinningNumbers;
 
 public class Lotto {
@@ -23,5 +24,11 @@ public class Lotto {
 
     public boolean containsBonus(BonusNumber bonusNumber) {
         return numbers.contains(bonusNumber.getValue());
+    }
+
+    public Rank calculateRank(WinningNumbers winningNumbers, BonusNumber bonusNumber) {
+        int matchCount = countMatches(winningNumbers);
+        boolean hasBonus = containsBonus(bonusNumber);
+        return Rank.of(matchCount, hasBonus);
     }
 }

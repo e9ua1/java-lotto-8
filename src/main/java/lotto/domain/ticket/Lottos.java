@@ -16,7 +16,7 @@ public class Lottos {
     private final List<Lotto> lottos;
 
     public Lottos(List<Lotto> lottos) {
-        this.lottos = lottos;
+        this.lottos = List.copyOf(lottos);
     }
 
     public int size() {
@@ -29,7 +29,7 @@ public class Lottos {
 
     public WinningStatistics calculateStatistics(WinningNumbers winningNumbers, BonusNumber bonusNumber) {
         Map<Rank, Long> rankCounts = lottos.stream()
-                .map(lotto -> calculateRank(lotto, winningNumbers, bonusNumber))
+                .map(lotto -> lotto.calculateRank(winningNumbers, bonusNumber))
                 .filter(Rank::isWinning)
                 .collect(Collectors.groupingBy(
                         rank -> rank,
@@ -38,11 +38,5 @@ public class Lottos {
                 ));
 
         return new WinningStatistics(rankCounts);
-    }
-
-    private Rank calculateRank(Lotto lotto, WinningNumbers winningNumbers, BonusNumber bonusNumber) {
-        int matchCount = lotto.countMatches(winningNumbers);
-        boolean hasBonus = lotto.containsBonus(bonusNumber);
-        return Rank.of(matchCount, hasBonus);
     }
 }
