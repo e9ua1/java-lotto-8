@@ -111,17 +111,21 @@
 - [x] 로또 번호는 6개여야 한다 (LottoNumbers)
 - [x] 로또 번호는 중복되지 않는다 (LottoNumbers)
 - [x] 로또 번호 범위 검증 기능을 제공한다 (LottoNumber.isInRange())
+- [x] 다른 로또 번호와의 일치 개수를 계산한다 (LottoNumbers.countMatches())
+- [x] 정렬된 번호 리스트를 제공한다 (LottoNumbers.getSortedNumbers())
 
 #### 2. 로또 티켓 (Lotto)
-- [x] 로또는 LottoNumbers를 사용하여 번호를 검증한다
+- [x] 로또는 LottoNumbers 타입으로 번호를 관리한다
 - [x] 로또 번호는 생성 시점에 오름차순으로 정렬된다
-- [x] 로또는 당첨 번호와 일치하는 개수를 스스로 계산한다
-- [x] 로또는 보너스 번호 포함 여부를 스스로 판단한다
+- [x] 로또는 당첨 번호와 일치하는 개수를 계산한다
+- [x] 로또는 보너스 번호 포함 여부를 판단한다
+- [x] 로또는 자신의 등수를 스스로 계산한다 (calculateRank())
 - [x] 로또 번호를 출력 형식으로 변환한다
 
 #### 3. 당첨 번호 관리 (WinningNumbers)
 - [x] 당첨 번호는 LottoNumbers로 검증한다
 - [x] 당첨 번호는 특정 번호의 포함 여부를 확인한다
+- [x] 당첨 번호는 사용자 번호와의 일치 개수 계산 책임을 가진다 (countMatches())
 
 #### 4. 보너스 번호 관리 (BonusNumber)
 - [x] 보너스 번호는 1~45 범위의 숫자다
@@ -152,18 +156,16 @@
 - [x] Lottos 일급 컬렉션으로 반환한다
 
 #### 8. 로또 목록 관리 (Lottos)
-- [x] 구매한 모든 로또를 관리한다
+- [x] 구매한 모든 로또를 관리한다 (불변 컬렉션)
 - [x] 로또 개수를 반환한다
 - [x] 각 로또를 순회할 수 있다
-- [x] 구매한 모든 로또의 당첨 결과를 계산한다
-- [x] 각 로또의 일치 개수와 보너스 일치 여부로 등수를 판정한다
+- [x] 각 로또에게 등수 계산을 위임한다 (Lotto.calculateRank())
 - [x] 등수별 당첨 개수를 집계하여 WinningStatistics를 생성한다
 
 #### 9. 당첨 통계 (WinningStatistics)
 - [x] 등수별 당첨 개수를 저장한다
 - [x] 특정 등수의 당첨 개수를 반환한다
 - [x] 등수별 당첨 개수와 상금으로 총 당첨 금액을 계산한다
-- [x] 구입 금액과 함께 수익률을 계산한다
 
 ### 입출력 기능
 
@@ -195,7 +197,7 @@
 - [x] 로또를 생성하고 출력한다
 - [x] 당첨 번호를 입력받는다
 - [x] 보너스 번호를 입력받는다
-- [x] 당첨 결과를 계산하고 출력한다
+- [x] 당첨 결과를 계산하고 출력한다 (도메인 객체 조합)
 - [x] 예외 발생 시 재입력을 받는다
 
 ## 패키지 구조
@@ -277,27 +279,30 @@ lotto
 │    ├──────────────────────┤                          │
 │    │ + LottoNumbers(List<Integer>)                   │
 │    │ + contains(int): boolean                        │
-│    │ + getNumbers(): List<Integer>                   │
+│    │ + countMatches(LottoNumbers): long              │
+│    │ + getSortedNumbers(): List<Integer>             │
 │    └──────────────────────┘                          │
 │         △                 △                          │
-│         │ 위임             │ 위임                      │
+│         │ 포함             │ 포함                      │
 │    ┌────┴────┐       ┌────┴──────┐                   │
 │    │         │       │           │                   │
 │  ┌─────────────┐   ┌──────────────────┐              │
 │  │   Lotto     │   │ WinningNumbers   │              │
 │  ├─────────────┤   ├──────────────────┤              │
-│  │ - numbers: List<Integer>  - lottoNumbers: LottoNumbers
+│  │ - numbers: LottoNumbers  - lottoNumbers: LottoNumbers
 │  ├─────────────┤   ├──────────────────┤              │
 │  │ + Lotto(List<Integer>)    + WinningNumbers(List)  │
 │  │ + toDisplayString(): String  + contains(int): boolean
 │  │ + countMatches(WinningNumbers): int               │
 │  │ + containsBonus(BonusNumber): boolean             │
-│  └─────────────┘   └──────────────────┘              │
-│         △                                            │
-│         │ 포함                                        │
-│         │                                            │
+│  │ + calculateRank(WinningNumbers, BonusNumber): Rank│
+│  └─────────────┘   ├──────────────────┤              │
+│         △          │ + WinningNumbers(List)          │
+│         │ 포함      │ + contains(int): boolean        │
+│         │          │ + countMatches(LottoNumbers):int│
+│         │          └──────────────────┘              │
 │  ┌──────────────────────┐                            │
-│  │      Lottos          │   (일급 컬렉션)               │
+│  │      Lottos          │   (일급 컬렉션, 불변)          │
 │  ├──────────────────────┤                            │
 │  │ - lottos: List<Lotto>│                            │
 │  ├──────────────────────┤                            │
@@ -322,123 +327,83 @@ lotto
 
 ### Domain Layer - 당첨 관리
 ```
-┌───────────────────────────────────────────────────────┐
-│                  domain.winning                       │
-├───────────────────────────────────────────────────────┤
-│                                                       │
-│  ┌──────────────────────┐                             │
-│  │   WinningNumbers     │   (위에서 정의)                │
-│  └──────────────────────┘                             │
-│           │ 사용                                       │
-│           ↓                                           │
-│  ┌──────────────────────┐                             │
-│  │    BonusNumber       │                             │
-│  ├──────────────────────┤                             │
-│  │ - number: int        │                             │
-│  ├──────────────────────┤                             │
-│  │ + BonusNumber(int, WinningNumbers)                 │
-│  │ + getValue(): int    │                             │
-│  └──────────────────────┘                             │
-│                                                       │
-│  ┌──────────────────────────────────────┐             │
-│  │           Rank (Enum)                │             │
-│  ├──────────────────────────────────────┤             │
-│  │ FIRST(6, false, 2_000_000_000, "6개 일치")           │
-│  │ SECOND(5, true, 30_000_000, "5개+보너스")             │
-│  │ THIRD(5, false, 1_500_000, "5개 일치") │             │
-│  │ FOURTH(4, false, 50_000, "4개 일치")   │             │
-│  │ FIFTH(3, false, 5_000, "3개 일치")     │             │
-│  │ NONE(0, false, 0, "낙첨")             │             │
-│  ├──────────────────────────────────────┤             │
-│  │ - matchCount: int                    │             │
-│  │ - bonusMatch: boolean                │             │
-│  │ - prize: int                         │             │
-│  │ - description: String                │             │
-│  ├──────────────────────────────────────┤             │
-│  │ + of(int, boolean): Rank   (static)  │             │
-│  │ + getPrize(): int                    │             │
-│  │ + isWinning(): boolean               │             │
-│  │ + getDescription(): String           │             │
-│  └──────────────────────────────────────┘             │
-│           △                                           │
-│           │ 사용                                       │
-│           │                                           │
-│  ┌──────────────────────────────────────┐             │
-│  │     WinningStatistics                │             │
-│  ├──────────────────────────────────────┤             │
-│  │ - rankCounts: Map<Rank, Long>        │             │
-│  ├──────────────────────────────────────┤             │
-│  │ + WinningStatistics(Map<Rank, Long>) │             │
-│  │ + getCountByRank(Rank): long         │             │
-│  │ + calculateTotalPrize(): long        │             │
-│  │ + calculateReturnRate(PurchaseAmount): double      │
-│  └──────────────────────────────────────┘             │
-│                                                       │
-└───────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────┐
+│                  domain.winning                      │
+├──────────────────────────────────────────────────────┤
+│                                                      │
+│  ┌──────────────────────────────┐                    │
+│  │     WinningNumbers           │                    │
+│  ├──────────────────────────────┤                    │
+│  │ - lottoNumbers: LottoNumbers │                    │
+│  ├──────────────────────────────┤                    │
+│  │ + WinningNumbers(List<Integer>)                   │
+│  │ + contains(int): boolean     │                    │
+│  │ + countMatches(LottoNumbers): int                 │
+│  └──────────────────────────────┘                    │
+│           △                                          │
+│           │ 협력                                      │
+│           │                                          │
+│  ┌──────────────────────────────┐                    │
+│  │      BonusNumber             │                    │
+│  ├──────────────────────────────┤                    │
+│  │ - number: int                │                    │
+│  ├──────────────────────────────┤                    │
+│  │ + BonusNumber(int, WinningNumbers)                │
+│  │ + getValue(): int            │                    │
+│  └──────────────────────────────┘                    │
+│                                                      │
+│  ┌──────────────────────────────┐                    │
+│  │         Rank (Enum)          │                    │
+│  ├──────────────────────────────┤                    │
+│  │ FIRST, SECOND, THIRD,        │                    │
+│  │ FOURTH, FIFTH, NONE          │                    │
+│  ├──────────────────────────────┤                    │
+│  │ - matchCount: int            │                    │
+│  │ - bonusMatch: boolean        │                    │
+│  │ - prize: int                 │                    │
+│  │ - description: String        │                    │
+│  ├──────────────────────────────┤                    │
+│  │ + of(int, boolean): Rank  (static)                │
+│  │ + getPrize(): int            │                    │
+│  │ + isWinning(): boolean       │                    │
+│  │ + getDescription(): String   │                    │
+│  └──────────────────────────────┘                    │
+│           △                                          │
+│           │ 사용                                      │
+│           │                                          │
+│  ┌──────────────────────────────┐                    │
+│  │   WinningStatistics          │                    │
+│  ├──────────────────────────────┤                    │
+│  │ - rankCounts: Map<Rank, Long>│                    │
+│  ├──────────────────────────────┤                    │
+│  │ + WinningStatistics(Map)     │                    │
+│  │ + getCountByRank(Rank): long │                    │
+│  │ + calculateTotalPrize(): long│                    │
+│  └──────────────────────────────┘                    │
+│                                                      │
+└──────────────────────────────────────────────────────┘
 ```
 
 ### Domain Layer - 금액 관리
 ```
-┌──────────────────────────────────────────┐
-│            domain.money                  │
-├──────────────────────────────────────────┤
-│                                          │
-│  ┌─────────────────────────────────┐     │
-│  │      PurchaseAmount             │     │
-│  ├─────────────────────────────────┤     │
-│  │ - amount: int                   │     │
-│  ├─────────────────────────────────┤     │
-│  │ + PurchaseAmount(int)           │     │
-│  │ + calculateLottoCount(): int    │     │
-│  │ + calculateReturnRate(long): double   │
-│  └─────────────────────────────────┘     │
-│                                          │
-└──────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────┐
+│                  domain.money                        │
+├──────────────────────────────────────────────────────┤
+│                                                      │
+│  ┌──────────────────────────────┐                    │
+│  │    PurchaseAmount            │                    │
+│  ├──────────────────────────────┤                    │
+│  │ - amount: int                │                    │
+│  ├──────────────────────────────┤                    │
+│  │ + PurchaseAmount(int)                             │
+│  │ + calculateLottoCount(): int                      │
+│  │ + calculateReturnRate(long): double               │
+│  └──────────────────────────────┘                    │
+│                                                      │
+└──────────────────────────────────────────────────────┘
 ```
 
-### View Layer
-```
-┌────────────────────────────────────────────┐
-│                 view                       │
-├────────────────────────────────────────────┤
-│                                            │
-│  ┌──────────────────────────────────┐      │
-│  │        InputParser               │      │
-│  ├──────────────────────────────────┤      │
-│  │                                  │      │
-│  ├──────────────────────────────────┤      │
-│  │ + parseInt(String): int          │      │
-│  │ + parseNumbers(String): List<Integer>   │
-│  └──────────────────────────────────┘      │
-│                △                           │
-│                │ 사용                       │
-│                │                           │
-│  ┌──────────────────────────────────┐      │
-│  │         InputView                │      │
-│  ├──────────────────────────────────┤      │
-│  │                                  │      │
-│  ├──────────────────────────────────┤      │
-│  │ + readPurchaseAmount(): String   │      │
-│  │ + readWinningNumbers(): String   │      │
-│  │ + readBonusNumber(): String      │      │
-│  └──────────────────────────────────┘      │
-│                                            │
-│  ┌──────────────────────────────────┐      │
-│  │        OutputView                │      │
-│  ├──────────────────────────────────┤      │
-│  │                                  │      │
-│  ├──────────────────────────────────┤      │
-│  │ + printPurchaseCount(int): void  │      │
-│  │ + printLottos(Lottos): void      │      │
-│  │ + printStatistics(WinningStatistics): void
-│  │ + printReturnRate(double): void  │      │
-│  │ + printErrorMessage(String): void│      │
-│  └──────────────────────────────────┘      │
-│                                            │
-└────────────────────────────────────────────┘
-```
-
-## 객체 간 협력 구조
+## 객체 협력 구조
 
 ### 1. 로또 구매 흐름
 ```
@@ -448,45 +413,42 @@ lotto
    ↓
 [InputView.readPurchaseAmount()]
    │
-   │ 2. 문자열 반환
-   ↓
-[LottoGame.readPurchaseAmount()]
-   │
-   │ 3. 파싱
+   │ 2. 파싱
    ↓
 [InputParser.parseInt()] ────→ int 8000
    │
-   │ 4. 검증 및 생성
+   │ 3. 검증 및 생성
+   │    - 양수인지
+   │    - 1,000원 단위인지
    ↓
 [PurchaseAmount(8000)]
-   │ - 양수 검증
-   │ - 1,000원 단위 검증
    │
-   │ 5. 로또 생성 요청
+   │ 4. 로또 개수 계산
+   │    calculateLottoCount() ───→ 8개
+   │
+   │ 5. 로또 생성
    ↓
 [LottoGenerator.generate(PurchaseAmount)]
    │
-   │ 6. 개수 계산
-   │ purchaseAmount.calculateLottoCount() → 8
+   │ 6. 8번 반복:
    │
-   │ 7. 8번 반복: Randoms.pickUniqueNumbersInRange(1, 45, 6)
+   ├─→ Randoms.pickUniqueNumbersInRange(1, 45, 6)
+   │    └─→ List<Integer> (예: [8, 21, 23, 41, 42, 43])
    │
-   │ 8. 각 번호로 Lotto 생성
+   │ 7. 각 번호 리스트로 Lotto 생성
    ↓
 [Lotto(List<Integer>)]
    │
-   │ 9. LottoNumbers로 검증
+   │ 8. LottoNumbers로 검증 및 관리 (타입 변경)
    │    - 6개인지
    │    - 1~45 범위인지  
    │    - 중복 없는지
    │
-   │ 10. 정렬하여 저장
-   │
-   │ 11. 8개의 Lotto를 일급 컬렉션으로 묶기
-   ↓
+   │ 9. 8개의 Lotto를 일급 컬렉션으로 묶기
+   │    (불변 컬렉션으로 생성)
 [Lottos(List<Lotto>)]
    │
-   │ 12. 개수와 번호 출력
+   │ 10. 개수와 번호 출력
    ↓
 [OutputView.printPurchaseCount(8)]
 [OutputView.printLottos(Lottos)]
@@ -528,14 +490,15 @@ lotto
    │
    │ 7. 각 Lotto마다 반복:
    │
-   ├─→ [Lotto.countMatches(WinningNumbers)]
-   │    └─→ int (일치 개수)
-   │
-   ├─→ [Lotto.containsBonus(BonusNumber)]
-   │    └─→ boolean (보너스 포함 여부)
-   │
-   ├─→ [Rank.of(matchCount, hasBonus)]
-   │    └─→ Rank (등수 판정)
+   ├─→ [Lotto.calculateRank(WinningNumbers, BonusNumber)]
+   │    │
+   │    ├─→ countMatches(WinningNumbers) → int
+   │    │    └─→ WinningNumbers.countMatches(LottoNumbers)
+   │    │         └─→ LottoNumbers.countMatches(LottoNumbers)
+   │    │
+   │    ├─→ containsBonus(BonusNumber) → boolean
+   │    │
+   │    └─→ Rank.of(matchCount, hasBonus) → Rank
    │
    │ 8. 등수별 집계 (EnumMap 사용)
    │
@@ -545,10 +508,12 @@ lotto
    │ 9. 총 당첨 금액 계산
    │ calculateTotalPrize()
    │  = FIFTH(2개) * 5,000원 + FOURTH(1개) * 50,000원 + ...
+   │    → long totalPrize
    │
    │ 10. 수익률 계산
-   │ calculateReturnRate(PurchaseAmount)
-   │  = (총 당첨 금액 / 구입 금액) * 100
+   │ [LottoGame에서 직접 조합]
+   │   totalPrize = statistics.calculateTotalPrize()
+   │   returnRate = purchaseAmount.calculateReturnRate(totalPrize)
    │
    │ 11. 결과 출력
    ↓
@@ -597,14 +562,16 @@ LottoNumber
 LottoNumbers
   ├─ 크기 검증 (6개)
   ├─ 중복 검증
-  └─ 범위 검증 (LottoNumber.isInRange() 사용)
+  ├─ 범위 검증 (LottoNumber.isInRange() 사용)
+  └─ 일치 개수 계산 (countMatches())  ← 추가
 
 Lotto
-  └─ LottoNumbers에 위임
-      (검증 + 정렬)
+  ├─ LottoNumbers에 검증 위임
+  └─ 등수 계산 책임 (calculateRank())  ← 추가
 
 WinningNumbers
-  └─ LottoNumbers에 위임
+  ├─ LottoNumbers에 검증 위임
+  └─ 일치 개수 계산 책임 (countMatches())  ← 추가
 
 BonusNumber
   ├─ 범위 검증 (LottoNumber.isInRange() 사용)
@@ -612,7 +579,8 @@ BonusNumber
 
 PurchaseAmount
   ├─ 양수 검증
-  └─ 1,000원 단위 검증
+  ├─ 1,000원 단위 검증
+  └─ 수익률 계산 책임
 
 InputParser
   ├─ 숫자 변환 검증
@@ -630,24 +598,30 @@ LottoNumber
 └─ 원칙: 원시값 포장 (1~45)
 
 LottoNumbers
-├─ 책임: 로또 번호 6개에 대한 검증
-│        (크기, 중복, 범위)
+├─ 책임: 로또 번호 6개에 대한 검증 (크기, 중복, 범위)
+│        다른 로또 번호와의 일치 개수 계산
+│        정렬된 번호 리스트 제공
 ├─ 협력: Lotto, WinningNumbers에서 위임받아 사용
-└─ 원칙: 공통 검증 로직 재사용
+└─ 원칙: 공통 검증 로직 재사용, 일급 컬렉션
 
 Lotto
-├─ 책임: 로또 한 장의 번호 관리 + 정렬
+├─ 책임: 로또 한 장의 번호 관리 (LottoNumbers 타입으로)
+│        자신의 등수를 스스로 계산
 │        일치 개수 계산, 보너스 포함 여부 판단
-├─ 협력: LottoNumbers로 검증 위임
-│        WinningNumbers, BonusNumber와 비교
+├─ 협력: LottoNumbers로 검증 및 비교 위임
+│        WinningNumbers, BonusNumber와 협력
+│        Rank.of()로 등수 판정
 └─ 원칙: Tell, Don't Ask (스스로 계산)
+         SRP (자신의 등수는 자신이 계산)
 
 Lottos (일급 컬렉션)
-├─ 책임: 여러 로또 관리
-│        전체 로또의 당첨 결과 계산
+├─ 책임: 여러 로또 관리 (불변 컬렉션)
+│        각 로또에게 등수 계산 위임
 │        통계 집계
-├─ 협력: Lotto, WinningNumbers, BonusNumber, Rank
+├─ 협력: Lotto.calculateRank() 호출
+│        WinningNumbers, BonusNumber 전달
 └─ 원칙: 컬렉션 기반 행위 캡슐화
+         방어적 복사 (List.copyOf())
 
 LottoGenerator
 ├─ 책임: 로또 자동 생성
@@ -658,9 +632,10 @@ LottoGenerator
 
 WinningNumbers
 ├─ 책임: 당첨 번호 6개 관리
+│        사용자 번호와 일치 개수 계산
 ├─ 협력: LottoNumbers로 검증 위임
-│        Lotto의 일치 개수 계산에 협력
-└─ 원칙: 불변 객체
+│        LottoNumbers.countMatches() 활용
+└─ 원칙: 불변 객체, 비교 책임 소유
 
 BonusNumber
 ├─ 책임: 보너스 번호 1개 관리 + 중복 검증
@@ -677,18 +652,18 @@ Rank (Enum)
 WinningStatistics
 ├─ 책임: 등수별 통계 집계
 │        총 당첨 금액 계산
-│        수익률 계산
 ├─ 협력: Rank로 통계 집계
-│        PurchaseAmount로 수익률 계산
 └─ 원칙: 값 객체 (불변)
+         단일 책임 (통계만)
 
 PurchaseAmount
 ├─ 책임: 구입 금액 검증 (양수, 1,000원 단위)
 │        로또 개수 계산
 │        수익률 계산
 ├─ 협력: LottoGenerator에게 개수 정보 제공
-│        WinningStatistics에게 수익률 계산 협력
+│        LottoGame에서 수익률 계산 시 사용
 └─ 원칙: 원시값 포장 + 계산 캡슐화
+         Information Expert (금액 정보 소유자가 계산)
 ```
 
 ### View 객체
@@ -715,61 +690,20 @@ InputParser
 LottoGame
 ├─ 책임: 전체 게임 흐름 제어
 │        예외 처리 및 재입력
+│        도메인 객체들의 조합
 ├─ 협력: InputView, OutputView, Domain 계층 연결
+│        statistics.calculateTotalPrize() +
+│        purchaseAmount.calculateReturnRate() 조합
 └─ 원칙: 추상화 수준 통일
-          재시도 로직 캡슐화 (retry 메서드)
+         재시도 로직 캡슐화 (retry 메서드)
+         Law of Demeter (직접 협력)
 ```
-
-## 설계 원칙
-
-### 1. Tell, Don't Ask
-- 객체가 스스로 판단하고 계산하도록 설계
-- Getter를 최소화하고, 필요한 경우에만 제공
-- ✅ 좋은 예: `lotto.countMatches(winningNumbers)`
-- ❌ 나쁜 예: `lotto.getNumbers()` 후 외부에서 비교
-
-### 2. 단일 책임 원칙 (SRP)
-- 각 클래스는 명확한 하나의 책임만 가짐
-- `PurchaseAmount`: 금액 검증 + 개수 계산 + 수익률 계산
-- `WinningStatistics`: 통계 집계 + 상금 계산 + 수익률 계산
-- `LottoGenerator`: 로또 생성만
-- `InputParser`: 파싱만
-
-### 3. 원시값 포장
-- 의미 있는 값은 객체로 포장하여 검증 로직 캡슐화
-- `LottoNumber`: 1~45 범위 검증
-- `PurchaseAmount`: 양수 + 1,000원 단위 검증
-- `BonusNumber`: 범위 + 중복 검증
-
-### 4. 일급 컬렉션
-- 컬렉션을 감싸서 컬렉션 기반 행위를 캡슐화
-- `Lottos`: 여러 로또의 당첨 결과 계산, 통계 집계
-- `LottoNumbers`: 6개 번호의 검증
-
-### 5. Enum 활용
-- 고정된 값과 로직을 Enum으로 표현
-- `Rank`: 등수 판정과 상금 제공, 설명 제공
-
-### 6. 생성 시점 검증
-- 불변식을 생성자에서 보장하여 항상 유효한 상태 유지
-- 모든 Domain 객체는 생성 시점에 검증
-- 검증 실패 시 `IllegalArgumentException` 발생
-
-### 7. 위임을 통한 재사용
-- 공통 로직을 별도 클래스로 분리하여 위임
-- `Lotto`와 `WinningNumbers` 모두 `LottoNumbers`에 검증 위임
-- `BonusNumber`는 `LottoNumber.isInRange()` 사용
-
-### 8. 재시도 패턴 (Functional Programming)
-- `Supplier<T>`를 사용한 재시도 로직 캡슐화
-- 예외 발생 시 에러 메시지 출력 후 재입력
-- 코드 중복 제거 및 일관된 예외 처리
 
 ## 프로그래밍 요구사항
 
 ### 필수 구현 사항
 - Lotto 클래스를 사용하여 구현해야 한다
-- Lotto에 numbers 이외의 필드(인스턴스 변수)를 추가할 수 없다
+- Lotto에 numbers 필드의 타입을 LottoNumbers로 변경
 - numbers의 접근 제어자인 private은 변경할 수 없다
 - Lotto의 패키지는 `lotto.domain.ticket`으로 변경했다
 
@@ -787,9 +721,3 @@ LottoGame
 - `camp.nextstep.edu.missionutils`에서 제공하는 Randoms 및 Console API를 사용하여 구현해야 한다
 - Random 값 추출은 `camp.nextstep.edu.missionutils.Randoms`의 `pickUniqueNumbersInRange()`를 활용한다
 - 사용자가 입력하는 값은 `camp.nextstep.edu.missionutils.Console`의 `readLine()`을 활용한다
-
-### 테스트 작성
-- 구현한 기능에 대한 단위 테스트를 작성한다
-- 단, UI(System.out, System.in, Scanner) 로직은 테스트에서 제외한다
-- 테스트는 도메인 로직을 중심으로 작성한다
-- 각 클래스별로 독립적인 테스트를 작성한다
