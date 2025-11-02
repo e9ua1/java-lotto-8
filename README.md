@@ -256,73 +256,92 @@ lotto
 
 ### Domain Layer - 티켓 관리
 ```
-┌──────────────────────────────────────────────────────┐
-│                  domain.ticket                       │
-├──────────────────────────────────────────────────────┤
-│                                                      │
-│  ┌─────────────────┐                                 │
-│  │  LottoNumber    │                                 │
-│  ├─────────────────┤                                 │
-│  │ - value: int    │                                 │
-│  ├─────────────────┤                                 │
-│  │ + LottoNumber(int)                                │
-│  │ + isInRange(int): boolean  (static)               │
-│  │ + getValue(): int                                 │
-│  └─────────────────┘                                 │
-│           △                                          │
-│           │ 사용                                      │
-│           │                                          │
-│    ┌──────────────────────┐                          │
-│    │   LottoNumbers       │                          │
-│    ├──────────────────────┤                          │
-│    │ - numbers: List<Integer>                        │
-│    ├──────────────────────┤                          │
-│    │ + LottoNumbers(List<Integer>)                   │
-│    │ + contains(int): boolean                        │
-│    │ + countMatches(LottoNumbers): long              │
-│    │ + getSortedNumbers(): List<Integer>             │
-│    └──────────────────────┘                          │
-│         △                 △                          │
-│         │ 포함             │ 포함                      │
-│    ┌────┴────┐       ┌────┴──────┐                   │
-│    │         │       │           │                   │
-│  ┌─────────────┐   ┌──────────────────┐              │
-│  │   Lotto     │   │ WinningNumbers   │              │
-│  ├─────────────┤   ├──────────────────┤              │
-│  │ - numbers: LottoNumbers  - lottoNumbers: LottoNumbers
-│  ├─────────────┤   ├──────────────────┤              │
-│  │ + Lotto(List<Integer>)    + WinningNumbers(List)  │
-│  │ + toDisplayString(): String  + contains(int): boolean
-│  │ + countMatches(WinningNumbers): int               │
-│  │ + containsBonus(BonusNumber): boolean             │
-│  │ + calculateRank(WinningNumbers, BonusNumber): Rank│
-│  └─────────────┘   ├──────────────────┤              │
-│         △          │ + WinningNumbers(List)          │
-│         │ 포함      │ + contains(int): boolean        │
-│         │          │ + countMatches(LottoNumbers):int│
-│         │          └──────────────────┘              │
-│  ┌──────────────────────┐                            │
-│  │      Lottos          │   (일급 컬렉션, 불변)          │
-│  ├──────────────────────┤                            │
-│  │ - lottos: List<Lotto>│                            │
-│  ├──────────────────────┤                            │
-│  │ + Lottos(List<Lotto>)│                            │
-│  │ + size(): int        │                            │
-│  │ + forEach(Consumer<Lotto>): void                  │
-│  │ + calculateStatistics(...): WinningStatistics     │
-│  └──────────────────────┘                            │
-│         △                                            │
-│         │ 생성                                        │
-│         │                                            │
-│  ┌──────────────────────┐                            │
-│  │  LottoGenerator      │                            │
-│  ├──────────────────────┤                            │
-│  │                      │                            │
-│  ├──────────────────────┤                            │
-│  │ + generate(PurchaseAmount): Lottos                │
-│  └──────────────────────┘                            │
-│                                                      │
-└──────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                            domain.ticket                                     │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│                       ┌─────────────────┐                                    │
+│                       │  LottoNumber    │                                    │
+│                       ├─────────────────┤                                    │
+│                       │ - value: int    │                                    │
+│                       ├─────────────────┤                                    │
+│                       │ + LottoNumber(int)                                   │
+│                       │ + isInRange(int): boolean  (static)                  │
+│                       │ + getValue(): int                                    │
+│                       └─────────────────┘                                    │
+│                                △                                             │
+│                                │ 사용                                         │
+│                                │                                             │
+│                       ┌────────┴──────────┐                                  │
+│                       │   LottoNumbers    │                                  │
+│                       ├───────────────────┤                                  │
+│                       │ - numbers: List<Integer>                             │
+│                       ├───────────────────┤                                  │
+│                       │ + LottoNumbers(List<Integer>)                        │
+│                       │ + contains(int): boolean                             │
+│                       │ + countMatches(LottoNumbers): long                   │
+│                       │ + getSortedNumbers(): List<Integer>                  │
+│                       └───────────────────┘                                  │
+│                         △               △                                    │
+│                         │ 포함           │ 포함                                │
+│                         │               │                                    │
+│           ┌─────────────┘               └─────────────┐                      │
+│           │                                           │                      │
+│  ┌────────┴──────────┐                   ┌────────────┴─────────┐            │
+│  │       Lotto       │                   │   WinningNumbers     │            │
+│  ├───────────────────┤                   ├──────────────────────┤            │
+│  │ - numbers:        │                   │ - lottoNumbers:      │            │
+│  │   LottoNumbers    │                   │   LottoNumbers       │            │
+│  ├───────────────────┤                   ├──────────────────────┤            │
+│  │ + Lotto(          │                   │ + WinningNumbers(    │            │
+│  │   List<Integer>)  │                   │   List<Integer>)     │            │
+│  │ + toDisplayString():                  │ + contains(int):     │            │
+│  │   String          │                   │   boolean            │            │
+│  │ + countMatches(   │                   │ + countMatches(      │            │
+│  │   WinningNumbers):│                   │   LottoNumbers):     │            │
+│  │   int             │                   │   int                │            │
+│  │ + containsBonus(  │                   └──────────────────────┘            │
+│  │   BonusNumber):   │                                                       │
+│  │   boolean         │                                                       │
+│  │ + calculateRank(  │                                                       │
+│  │   WinningNumbers, │                                                       │
+│  │   BonusNumber):   │                                                       │
+│  │   Rank            │                                                       │
+│  └───────────────────┘                                                       │
+│           △                                                                  │
+│           │ 포함                                                              │
+│           │                                                                  │
+│           │                                                                  │
+│  ┌────────┴──────────────┐                                                   │
+│  │        Lottos         │   (일급 컬렉션, 불변)                                 │
+│  ├───────────────────────┤                                                   │
+│  │ - lottos: List<Lotto> │                                                   │
+│  ├───────────────────────┤                                                   │
+│  │ + Lottos(List<Lotto>) │                                                   │
+│  │ + size(): int         │                                                   │
+│  │ + forEach(            │                                                   │
+│  │   Consumer<Lotto>):   │                                                   │
+│  │   void                │                                                   │
+│  │ + calculateStatistics(│                                                   │
+│  │   WinningNumbers,     │                                                   │
+│  │   BonusNumber):       │                                                   │
+│  │   WinningStatistics   │                                                   │
+│  └───────────────────────┘                                                   │
+│           △                                                                  │
+│           │ 생성                                                              │
+│           │                                                                  │
+│           │                                                                  │
+│  ┌────────┴──────────────┐                                                   │
+│  │    LottoGenerator     │                                                   │
+│  ├───────────────────────┤                                                   │
+│  │                       │                                                   │
+│  ├───────────────────────┤                                                   │
+│  │ + generate(           │                                                   │
+│  │   PurchaseAmount):    │                                                   │
+│  │   Lottos              │                                                   │
+│  └───────────────────────┘                                                   │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Domain Layer - 당첨 관리
@@ -395,8 +414,8 @@ lotto
 │  ├──────────────────────────────┤                    │
 │  │ - amount: int                │                    │
 │  ├──────────────────────────────┤                    │
-│  │ + PurchaseAmount(int)                             │
-│  │ + calculateLottoCount(): int                      │
+│  │ + PurchaseAmount(int)        │                    │
+│  │ + calculateLottoCount(): int │                    │
 │  │ + calculateReturnRate(long): double               │
 │  └──────────────────────────────┘                    │
 │                                                      │
