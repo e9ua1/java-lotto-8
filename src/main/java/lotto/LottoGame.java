@@ -74,7 +74,9 @@ public class LottoGame {
             PurchaseAmount purchaseAmount) {
         WinningStatistics statistics = lottos.calculateStatistics(winningNumbers, bonusNumber);
         outputView.printStatistics(statistics);
-        double returnRate = statistics.calculateReturnRate(purchaseAmount);
+
+        long totalPrize = statistics.calculateTotalPrize();
+        double returnRate = purchaseAmount.calculateReturnRate(totalPrize);
         outputView.printReturnRate(returnRate);
     }
 
