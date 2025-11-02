@@ -15,4 +15,8 @@ public class WinningNumbers {
     public boolean contains(int number) {
         return lottoNumbers.contains(number);
     }
+
+    public int countMatches(LottoNumbers userNumbers) {
+        return (int) lottoNumbers.countMatches(userNumbers);
+    }
 }

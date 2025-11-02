@@ -2,6 +2,7 @@ package lotto.domain.ticket;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class LottoNumbers {
 
@@ -11,7 +12,7 @@ public class LottoNumbers {
 
     public LottoNumbers(List<Integer> numbers) {
         validate(numbers);
-        this.numbers = numbers;
+        this.numbers = List.copyOf(numbers);
     }
 
     private void validate(List<Integer> numbers) {
@@ -40,5 +41,21 @@ public class LottoNumbers {
 
     public boolean contains(int number) {
         return numbers.contains(number);
+    }
+
+    public long countMatches(LottoNumbers other) {
+        return numbers.stream()
+                .filter(other::contains)
+                .count();
+    }
+
+    public List<Integer> getSortedNumbers() {
+        return numbers.stream()
+                .sorted()
+                .toList();
+    }
+
+    public Stream<Integer> stream() {
+        return numbers.stream();
     }
 }

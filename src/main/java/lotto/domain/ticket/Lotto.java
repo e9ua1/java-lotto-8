@@ -1,7 +1,5 @@
 package lotto.domain.ticket;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import lotto.domain.winning.BonusNumber;
@@ -9,31 +7,18 @@ import lotto.domain.winning.WinningNumbers;
 
 public class Lotto {
 
-    private final List<Integer> numbers;
+    private final LottoNumbers numbers;
 
     public Lotto(List<Integer> numbers) {
-        validateNumbers(numbers);
-        this.numbers = createSortedNumbers(numbers);
-    }
-
-    private void validateNumbers(List<Integer> numbers) {
-        new LottoNumbers(numbers);
-    }
-
-    private List<Integer> createSortedNumbers(List<Integer> numbers) {
-        List<Integer> sortedNumbers = new ArrayList<>(numbers);
-        Collections.sort(sortedNumbers);
-        return sortedNumbers;
+        this.numbers = new LottoNumbers(numbers);
     }
 
     public String toDisplayString() {
-        return numbers.toString();
+        return numbers.getSortedNumbers().toString();
     }
 
     public int countMatches(WinningNumbers winningNumbers) {
-        return (int) numbers.stream()
-                .filter(winningNumbers::contains)
-                .count();
+        return winningNumbers.countMatches(numbers);
     }
 
     public boolean containsBonus(BonusNumber bonusNumber) {
