@@ -1,5 +1,7 @@
 package lotto.domain.winning;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -8,8 +10,6 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import lotto.domain.money.PurchaseAmount;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("WinningStatistics 테스트")
 class WinningStatisticsTest {

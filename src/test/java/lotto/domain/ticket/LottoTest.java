@@ -1,5 +1,8 @@
 package lotto.domain.ticket;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -10,9 +13,6 @@ import java.util.List;
 
 import lotto.domain.winning.BonusNumber;
 import lotto.domain.winning.WinningNumbers;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("Lotto 테스트")
 class LottoTest {

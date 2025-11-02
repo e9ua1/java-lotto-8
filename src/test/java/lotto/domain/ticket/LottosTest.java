@@ -1,5 +1,7 @@
 package lotto.domain.ticket;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -10,8 +12,6 @@ import lotto.domain.winning.BonusNumber;
 import lotto.domain.winning.Rank;
 import lotto.domain.winning.WinningNumbers;
 import lotto.domain.winning.WinningStatistics;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Lottos 테스트")
 class LottosTest {
