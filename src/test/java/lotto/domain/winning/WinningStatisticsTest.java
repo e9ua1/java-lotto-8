@@ -79,7 +79,8 @@ class WinningStatisticsTest {
             WinningStatistics statistics = new WinningStatistics(rankCounts);
             PurchaseAmount purchaseAmount = new PurchaseAmount(8000);
 
-            double returnRate = statistics.calculateReturnRate(purchaseAmount);
+            long totalPrize = statistics.calculateTotalPrize();
+            double returnRate = purchaseAmount.calculateReturnRate(totalPrize);
 
             assertThat(returnRate).isEqualTo(62.5);
         }
@@ -92,7 +93,8 @@ class WinningStatisticsTest {
             WinningStatistics statistics = new WinningStatistics(rankCounts);
             PurchaseAmount purchaseAmount = new PurchaseAmount(8000);
 
-            double returnRate = statistics.calculateReturnRate(purchaseAmount);
+            long totalPrize = statistics.calculateTotalPrize();
+            double returnRate = purchaseAmount.calculateReturnRate(totalPrize);
 
             assertThat(returnRate).isEqualTo(25_000_000.0);
         }
@@ -106,7 +108,8 @@ class WinningStatisticsTest {
             WinningStatistics statistics = new WinningStatistics(rankCounts);
             PurchaseAmount purchaseAmount = new PurchaseAmount(8000);
 
-            double returnRate = statistics.calculateReturnRate(purchaseAmount);
+            long totalPrize = statistics.calculateTotalPrize();
+            double returnRate = purchaseAmount.calculateReturnRate(totalPrize);
 
             assertThat(returnRate).isEqualTo(750.0);
         }
@@ -118,7 +121,8 @@ class WinningStatisticsTest {
             WinningStatistics statistics = new WinningStatistics(rankCounts);
             PurchaseAmount purchaseAmount = new PurchaseAmount(8000);
 
-            double returnRate = statistics.calculateReturnRate(purchaseAmount);
+            long totalPrize = statistics.calculateTotalPrize();
+            double returnRate = purchaseAmount.calculateReturnRate(totalPrize);
 
             assertThat(returnRate).isEqualTo(0.0);
         }
