@@ -19,14 +19,6 @@ public class Lottos {
         this.lottos = List.copyOf(lottos);
     }
 
-    public int size() {
-        return lottos.size();
-    }
-
-    public void forEach(Consumer<Lotto> action) {
-        lottos.forEach(action);
-    }
-
     public WinningStatistics calculateStatistics(WinningNumbers winningNumbers, BonusNumber bonusNumber) {
         Map<Rank, Long> rankCounts = lottos.stream()
                 .map(lotto -> lotto.calculateRank(winningNumbers, bonusNumber))
@@ -38,5 +30,13 @@ public class Lottos {
                 ));
 
         return new WinningStatistics(rankCounts);
+    }
+
+    public void forEach(Consumer<Lotto> action) {
+        lottos.forEach(action);
+    }
+
+    public int size() {
+        return lottos.size();
     }
 }
