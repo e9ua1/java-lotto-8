@@ -13,13 +13,13 @@ public class LottoNumber {
     }
 
     private void validateRange(int value) {
-        if (value < MIN_LOTTO_NUMBER || value > MAX_LOTTO_NUMBER) {
+        if (MIN_LOTTO_NUMBER > value || value > MAX_LOTTO_NUMBER) {
             throw new IllegalArgumentException("[ERROR] 로또 번호는 1부터 45 사이의 숫자여야 합니다.");
         }
     }
 
     public static boolean isInRange(int value) {
-        return value >= MIN_LOTTO_NUMBER && value <= MAX_LOTTO_NUMBER;
+        return MIN_LOTTO_NUMBER <= value && value <= MAX_LOTTO_NUMBER;
     }
 
     public int getValue() {
