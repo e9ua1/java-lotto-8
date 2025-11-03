@@ -45,12 +45,12 @@ public enum Rank {
         return this.bonusMatch == bonusMatch;
     }
 
-    public int getPrize() {
-        return prize;
-    }
-
     public boolean isWinning() {
         return this != NONE;
+    }
+
+    public int getPrize() {
+        return prize;
     }
 
     public String getDescription() {
