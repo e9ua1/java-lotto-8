@@ -11,13 +11,13 @@ public class WinningStatistics {
         this.rankCounts = new EnumMap<>(rankCounts);
     }
 
-    public long getCountByRank(Rank rank) {
-        return rankCounts.getOrDefault(rank, 0L);
-    }
-
     public long calculateTotalPrize() {
         return rankCounts.entrySet().stream()
                 .mapToLong(entry -> entry.getKey().getPrize() * entry.getValue())
                 .sum();
+    }
+
+    public long getCountByRank(Rank rank) {
+        return rankCounts.getOrDefault(rank, 0L);
     }
 }
