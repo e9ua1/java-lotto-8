@@ -18,17 +18,17 @@ public class Lotto {
         return numbers.getSortedNumbers().toString();
     }
 
+    public Rank calculateRank(WinningNumbers winningNumbers, BonusNumber bonusNumber) {
+        int matchCount = countMatches(winningNumbers);
+        boolean hasBonus = containsBonus(bonusNumber);
+        return Rank.of(matchCount, hasBonus);
+    }
+
     public int countMatches(WinningNumbers winningNumbers) {
         return winningNumbers.countMatches(numbers);
     }
 
     public boolean containsBonus(BonusNumber bonusNumber) {
         return numbers.contains(bonusNumber.getValue());
-    }
-
-    public Rank calculateRank(WinningNumbers winningNumbers, BonusNumber bonusNumber) {
-        int matchCount = countMatches(winningNumbers);
-        boolean hasBonus = containsBonus(bonusNumber);
-        return Rank.of(matchCount, hasBonus);
     }
 }
