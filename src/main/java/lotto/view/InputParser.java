@@ -10,7 +10,7 @@ public class InputParser {
 
     public static int parseInt(String input) {
         try {
-            return Integer.parseInt(input.trim());
+            return Integer.parseInt(input.strip());
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("[ERROR] 숫자를 입력해야 합니다.");
         }
@@ -20,7 +20,7 @@ public class InputParser {
         validateNotEmpty(input);
         try {
             return Arrays.stream(input.split(DELIMITER))
-                    .map(String::trim)
+                    .map(String::strip)
                     .map(Integer::parseInt)
                     .collect(Collectors.toList());
         } catch (NumberFormatException e) {
@@ -29,7 +29,7 @@ public class InputParser {
     }
 
     private static void validateNotEmpty(String input) {
-        if (input == null || input.trim().isEmpty()) {
+        if (input == null || input.isBlank()) {
             throw new IllegalArgumentException("[ERROR] 입력값이 비어있습니다.");
         }
     }
