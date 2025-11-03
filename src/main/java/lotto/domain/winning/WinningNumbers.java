@@ -12,11 +12,11 @@ public class WinningNumbers {
         this.lottoNumbers = new LottoNumbers(numbers);
     }
 
-    public boolean contains(int number) {
-        return lottoNumbers.contains(number);
-    }
-
     public int countMatches(LottoNumbers userNumbers) {
         return (int) lottoNumbers.countMatches(userNumbers);
+    }
+
+    public boolean contains(int number) {
+        return lottoNumbers.contains(number);
     }
 }
