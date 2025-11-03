@@ -14,10 +14,6 @@ public class Lotto {
         this.numbers = new LottoNumbers(numbers);
     }
 
-    public String toDisplayString() {
-        return numbers.getSortedNumbers().toString();
-    }
-
     public Rank calculateRank(WinningNumbers winningNumbers, BonusNumber bonusNumber) {
         int matchCount = countMatches(winningNumbers);
         boolean hasBonus = containsBonus(bonusNumber);
@@ -30,5 +26,9 @@ public class Lotto {
 
     public boolean containsBonus(BonusNumber bonusNumber) {
         return numbers.contains(bonusNumber.getValue());
+    }
+
+    public String toDisplayString() {
+        return numbers.getSortedNumbers().toString();
     }
 }
