@@ -17,6 +17,7 @@ public class Lotto {
     public Rank calculateRank(WinningNumbers winningNumbers, BonusNumber bonusNumber) {
         int matchCount = countMatches(winningNumbers);
         boolean hasBonus = containsBonus(bonusNumber);
+
         return Rank.of(matchCount, hasBonus);
     }
 

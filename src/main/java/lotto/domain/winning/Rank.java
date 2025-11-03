@@ -41,6 +41,7 @@ public enum Rank {
         if (this.matchCount != matchCount) {
             return false;
         }
+
         return this.bonusMatch == bonusMatch;
     }
 
