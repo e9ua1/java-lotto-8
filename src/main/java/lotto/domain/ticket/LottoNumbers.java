@@ -2,7 +2,6 @@ package lotto.domain.ticket;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class LottoNumbers {
 
@@ -53,9 +52,5 @@ public class LottoNumbers {
         return numbers.stream()
                 .sorted()
                 .toList();
-    }
-
-    public Stream<Integer> stream() {
-        return numbers.stream();
     }
 }
