@@ -38,14 +38,14 @@ public class LottoNumbers {
         }
     }
 
-    public boolean contains(int number) {
-        return numbers.contains(number);
-    }
-
     public long countMatches(LottoNumbers other) {
         return numbers.stream()
                 .filter(other::contains)
                 .count();
+    }
+
+    public boolean contains(int number) {
+        return numbers.contains(number);
     }
 
     public List<Integer> getSortedNumbers() {
